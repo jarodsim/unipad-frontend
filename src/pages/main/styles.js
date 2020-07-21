@@ -1,128 +1,149 @@
 import styled from 'styled-components'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { FormControl } from '@material-ui/core'
+import Editor from 'react-simple-code-editor';
 
 export const Container = styled.div`
     width: 100%;
-    height: 95vh;
-    color: #FFF;
+    height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
 `
 
-export const Form = styled.form`
-    width: 500px;
-    min-height: 500px;
-    border-radius: 3px;
-    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.267);
+export const Header = styled.header`
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #FFF;
+    background: linear-gradient(90deg, #2193B0 0%, #6DD5ED 99.37%);
+
+    @media screen and (max-width: 600px){
+        h1{
+            display: none;
+        }
+    }
+`
+
+export const CopyPad = styled(CopyToClipboard)`
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+`
+
+export const SharePad = styled(CopyToClipboard)`
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+`
+
+export const MenuLeft = styled.div`
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 3px;
+`
+
+export const MenuRigth = styled.div`
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 3px;
+`
+
+export const MenuButton = styled.button`
+    margin-right: 3px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+`
+
+export const FormControlStyled = styled(FormControl)`
+    width: 140px;
+`
+
+export const FormNewUrl = styled.form`
+    width: 100%;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    h2{
+        width: 90%;
+    }
+`
+
+export const FormEditUrl = styled.form`
+    width: 100%;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    h2{
+        width: 90%;
+    }
+`
+
+export const FormPasswordUrl = styled.form`
+    width: 100%;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    h2{
+        width: 90%;
+    }
+`
+
+export const Button = styled.button`
+    width: 200px;
+    height: 45px;
+    background-color: transparent;
+    color: #FFF;
+    border: none;
+    border: solid 1px #2193B0;
+    border-radius: 4px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    text-transform: uppercase;
+
+    &:hover{
+        background-color: #44B2CC;
+    }
+`
+
+export const TelaLoading = styled.div`
+    width: 100%;
+    height: 100vh;
+    margin: auto;
+    color: #FFF;
+    background-color: #6DD5ED;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #373C3F;
-
-    @media screen and (max-width: 600px) {
-        width: 100%;
-    }
 `
-
-export const Head = styled.header`
+export const Textarea = styled(Editor)`
     width: 100%;
-    text-align: center;
-`
-
-export const DivUrl = styled.div`
-    width: 90%;
-    display: flex;
-    flex-direction: row;
-
-    input{
-        @media screen and (max-width: 600px) {
-            width: 100%;
-        }
-    }
-
-    @media screen and (max-width: 600px) {
-        flex-direction: column;
-    }
-`
-
-export const UrlEstatica = styled.input`
-    width: 190px;
-    color: #FFF;
-    background-color: #2F3437;
-    height: 30px;
-    border-radius: 3px;
-    font-size: 18px;
-    outline: none;
-    border: 1px solid #DDD;
-`
-
-export const FormLabel = styled.label`
-        width: 90%;
-        margin-top: 10px;
-`
-
-export const Input = styled.input`
-    width: 90%;
-    height: 30px;
-    border-radius: 3px;
-    font-size: 18px;
-    outline: none;
-    border: 1px solid #DDD;
-`
-
-export const Select = styled.select`
-    width: 90%;
-    height: 30px;
-    border-radius: 3px;
-    font-size: 18px;
-    outline: none;
-    border: 1px solid #DDD;
-`
-
-export const Option = styled.option`
-    width: 90%;
-    height: 30px;
-    border-radius: 3px;
-    font-size: 18px;
-    outline: none;
-    border: 1px solid #DDD;
-`
-
-export const Span = styled.span`
-    color: red;
-`
-
-export const Links = styled.a`
-    text-decoration: none;
-    color: rgb(1, 135, 224);
-`
-
-export const Button = styled.button`
-    width: 80px;
-    cursor: pointer;
-    border-radius: 3px;
-    border: none;
+    height: 90vh;
+    border-radius: 2px;
     background-color: #FFF;
-
-    &:hover{
-    background-color: #2F3437;
-    color: #FFF;
-    border: 1px solid #DDD;
-    }
-
-    @media screen and (max-width: 600px) {
-        height: 40px;
-        margin-top: 5px;
-        margin-left: 75%;
-    }
-`
-
-export const Footer = styled.footer`
-    margin-top: 40vh;
-    font-size: 12px;
-
-    @media screen and (max-width: 600px){
-        margin-top: 20.5%;
-    }
+    color: black;
+    resize: none;
+    border: none;
+    outline: none;
 `
