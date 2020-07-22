@@ -82,7 +82,7 @@ export const FormNewUrl = styled.form`
     }
 `
 
-export const FormEditUrl = styled.form`
+export const FormEditUrl = styled.div`
     width: 100%;
     height: 700px;
     display: flex;
