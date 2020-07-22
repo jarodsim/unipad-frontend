@@ -1,5 +1,5 @@
 #  Unipad
-O [unipad](https://unipad.herokuapp.com/) é um bloco de notas simples e online, inspirado no [dontpad](http://dontpad.com/). Nele você cria uma URL para o seu bloco de notas, que, sucessivamente você pode colocar o que quiser, desde que seja em texto.
+O [unipad](https://unipad.herokuapp.com/) é um serviço para compartilhamento de códigos de forma simples, inspirado no [dontpad](http://dontpad.com/). Nele você cria uma URL para o seu bloco de notas, que, sucessivamente você pode colocar o que quiser, desde que seja em texto.
 
 ### Diferenças entre o Unipad e o Dontpad
 | Ação | Dontpad | Unipad|
