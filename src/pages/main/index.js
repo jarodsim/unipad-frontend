@@ -32,9 +32,11 @@ function Main() {
     // aplica width de 100% caso a tela seja menor que 600px
     let drawerWidth = '400px'
     let formInputAndSelectWidth = '80%'
+    let formInputAndSelectHeight = 'auto'
     if (x.matches) {
         drawerWidth = '100%'
-        formInputAndSelectWidth = '100%'
+        formInputAndSelectWidth = '90%'
+        formInputAndSelectHeight= '100vh'
     }
 
     const useStyles = makeStyles((theme) => ({
@@ -44,7 +46,7 @@ function Main() {
         },
         drawerPaper: {
             width: drawerWidth,
-            height: '700px',
+            height: formInputAndSelectHeight,
             color: '#FFF',
             borderBottomRightRadius: '4px',
             background: '#6DD5ED',
@@ -554,7 +556,7 @@ function Main() {
                                                 />
                                             </FormControl>
 
-                                            <Button type="submit">Salvar</Button>
+                                            <Button type="submit">Criar</Button>
                                         </FormNewUrl>
                                     </Drawer>
                                 )}
