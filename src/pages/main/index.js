@@ -16,7 +16,7 @@ import 'prismjs/components/prism-sql';
 import './prism.css';
 
 // styled
-import { Header, CopyPad, MenuLeft, MenuRigth, SharePad, MenuButton, FormControlStyled, FormNewUrl, FormEditUrl, FormPasswordUrl, Button, TelaLoading, Textarea } from './styles'
+import { Header, CopyPad, MenuLeft, MenuRigth, SharePad, MenuButton, FormControlStyled, FormNewUrl, FormEditUrl, FormPasswordUrl, Button, TelaLoading, Textarea, Footer, HeaderInitialPage } from './styles'
 // react-icons
 import { MdMenu, MdContentCopy, MdShare, MdArrowBack, MdLockOutline } from 'react-icons/md'
 // material-ui
@@ -32,11 +32,9 @@ function Main() {
     // aplica width de 100% caso a tela seja menor que 600px
     let drawerWidth = '400px'
     let formInputAndSelectWidth = '80%'
-    let formInputAndSelectHeight = 'auto'
     if (x.matches) {
         drawerWidth = '100%'
         formInputAndSelectWidth = '90%'
-        formInputAndSelectHeight= '100vh'
     }
 
     const useStyles = makeStyles((theme) => ({
@@ -46,10 +44,10 @@ function Main() {
         },
         drawerPaper: {
             width: drawerWidth,
-            height: formInputAndSelectHeight,
+            height: '100%',
             color: '#FFF',
             borderBottomRightRadius: '4px',
-            background: '#6DD5ED',
+            background: 'linear-gradient(90deg, #2193B0 0%, #3AA9C4 99.37%)',
         },
         drawerHeader: {
             display: 'flex',
@@ -92,6 +90,7 @@ function Main() {
     const [secure, setSecure] = useState(false)
     const [expiration, setExpiration] = useState('')
     const [passed, setPassed] = useState(true)
+    const [initialPage, setInitialPage] = useState(true)
     const [token, setToken] = useState(null)
 
     // FUNÇÕES
@@ -144,6 +143,7 @@ function Main() {
                 setPad(unipad.pad)
                 setFormat(unipad.format)
                 setPassed(true)
+                setInitialPage(false)
                 setLoading(false)
                 setShowMenu(false)
                 return
@@ -203,6 +203,7 @@ function Main() {
 
             setPad(unipadLoged.pad)
             setFormat(unipadLoged.format)
+            setInitialPage(false)
             setPassed(true)
             setLoading(false)
             return
@@ -277,7 +278,6 @@ function Main() {
      * @param {password} passwordEncripted
      */
     async function authUrl(url, password) {
-        console.log(url)
         const responseAuth = await api.post(`/auth`, {
             url,
             password
@@ -327,75 +327,55 @@ function Main() {
                 ) :
                     passed ? (
                         <>
-                            <Header>
-                                <MenuLeft>
-                                    <MenuButton onClick={() => setShowMenu((prevState) => !prevState)}>
-                                        <MdMenu size={30} color="#FFF" />
-                                    </MenuButton>
+                            {!initialPage ? (
+                                <>
+                                    <Header>
+                                        <MenuLeft>
+                                            <MenuButton onClick={() => setShowMenu((prevState) => !prevState)}>
+                                                <MdMenu size={30} color="#FFF" />
+                                            </MenuButton>
 
-                                    <FormControlStyled variant="outlined" id="select-head-format">
-                                        <InputLabel id="select-head-format">Formato</InputLabel>
-                                        <Select
-                                            labelId="select-head-format"
-                                            value={format}
-                                            onChange={e => { setFormat(e.target.value); salva() }}
-                                            label="Formato"
-                                        >
-                                            <MenuItem value="javascript">
-                                                javascript
-                                            </MenuItem>
+                                        </MenuLeft>
 
-                                            <MenuItem value="java">
-                                                java
-                                            </MenuItem>
+                                        <h1 onClick={() => { window.location.href = '/' }}>UNIPAD</h1>
 
-                                            <MenuItem value="json">
-                                                json
-                                            </MenuItem>
+                                        <MenuRigth>
+                                            <CopyPad text={pad}>
+                                                <button onClick={() => alert('PAD copiado para a sua área de transfrência')}>
+                                                    <MdContentCopy size={30} color="#FFF" />
+                                                </button>
 
-                                            <MenuItem value="c">
-                                                C
-                                            </MenuItem>
+                                            </CopyPad>
 
-                                            <MenuItem value="sql">
-                                                SQL
-                                            </MenuItem>
-                                        </Select>
-                                    </FormControlStyled>
-                                </MenuLeft>
+                                            <SharePad>
+                                                <CopyPad text={`unipad.herokuapp.com${urlPathName}`}>
+                                                    <button onClick={() => alert('Link copiado para a sua área de transfrência')}>
+                                                        <MdShare size={30} color="#FFF" />
+                                                    </button>
 
-                                <h1>UNIPAD</h1>
+                                                </CopyPad>
+                                            </SharePad>
+                                        </MenuRigth>
+                                    </Header>
+                                    {/* TEXTAREA - PAD */}
+                                    <Textarea
+                                        value={pad}
+                                        onValueChange={pad => setPad(pad)}
+                                        onKeyUp={salva}
+                                        highlight={pad => highlight(pad, languages[format])}
+                                        padding={10}
+                                        style={{
+                                            fontFamily: '"Fira code", "Fira Mono", monospace',
+                                            fontSize: 14,
+                                        }}
+                                    />
+                                </>
 
-                                <MenuRigth>
-                                    <CopyPad text={pad}>
-                                        <button onClick={() => alert('PAD copiado para a sua área de transfrência')}>
-                                            <MdContentCopy size={30} color="#FFF" />
-                                        </button>
-
-                                    </CopyPad>
-
-                                    <SharePad>
-                                        <CopyPad text={`unipad.herokuapp.com${urlPathName}`}>
-                                            <button onClick={() => alert('Link copiado para a sua área de transfrência')}>
-                                                <MdShare size={30} color="#FFF" />
-                                            </button>
-
-                                        </CopyPad>
-                                    </SharePad>
-                                </MenuRigth>
-                            </Header>
-                            {/* TEXTAREA - PAD */}
-                            <Textarea
-                                value={pad}
-                                onValueChange={pad => setPad(pad)}
-                                onKeyUp={salva}
-                                highlight={pad => highlight(pad, languages[format])}
-                                padding={10}
-                                style={{
-                                    fontFamily: '"Fira code", "Fira Mono", monospace',
-                                    fontSize: 14,
-                                }}
-                            />
+                            ) : (
+                                    <HeaderInitialPage>
+                                        <h1 onClick={() => { window.location.href = '/' }}>UNIPAD</h1>
+                                    </HeaderInitialPage>
+                                )}
 
 
                             {/* MENU */}
@@ -410,7 +390,7 @@ function Main() {
                                     }}
                                 >
                                     <div className={classes.drawerHeader}>
-                                        <h3>UNIPAD</h3>
+                                        <h3 onClick={() => { window.location.href = '/' }}>UNIPAD</h3>
 
                                         <MenuButton onClick={e => setShowMenu((prevState) => !prevState)}>
                                             <MdArrowBack size={30} color="#FFF" />
@@ -418,7 +398,7 @@ function Main() {
                                     </div>
                                     <Divider />
                                     <FormEditUrl>
-                                        <h2>Configurações da rota {urlPathName}</h2>
+                                        <h2>unipad.herokuapp.com <br /> <strong>{urlPathName}</strong></h2>
 
                                         <FormControl variant="outlined" classes={{
                                             root: classes.selectsForm
@@ -451,6 +431,9 @@ function Main() {
 
                                         <Button onClick={() => salva()}>Salvar</Button>
                                     </FormEditUrl>
+                                    <Footer>
+                                        <small>Desenvolvido por: <a href="https://jarodmateus.herokuapp.com/" target="_blanck">Jarod Cavalcante</a> </small>
+                                    </Footer>
                                 </Drawer>
                             ) : (
                                     // MENU PARA ROTA NÃO EXISTENTE - CONFIGURADA
@@ -468,7 +451,7 @@ function Main() {
                                         <Divider />
                                         <FormNewUrl onSubmit={(e) => createUrlSubmit(e)}>
 
-                                            <h2>Para começar a usar o serviço é necessário configurar uma rota</h2>
+                                            <h2>Crie uma url e clique em "ir" para começar!</h2>
 
                                             <FormControl classes={{
                                                 root: classes.formControl
@@ -497,7 +480,7 @@ function Main() {
                                                 root: classes.formControl
                                             }}>
                                                 <TextField
-                                                    label="Senha"
+                                                    label="Senha (opcional)"
                                                     type="password"
                                                     variant="outlined"
                                                     classes={{
@@ -556,8 +539,11 @@ function Main() {
                                                 />
                                             </FormControl>
 
-                                            <Button type="submit">Criar</Button>
+                                            <Button type="submit">Ir</Button>
                                         </FormNewUrl>
+                                        <Footer>
+                                            <small>Desenvolvido por: <a href="https://jarodmateus.herokuapp.com/" target="_blanck">Jarod Cavalcante</a> </small>
+                                        </Footer>
                                     </Drawer>
                                 )}
                         </>
@@ -575,7 +561,7 @@ function Main() {
                                     <h3>UNIPAD</h3>
                                 </div>
                                 <Divider />
-                                <h2>A rota {urlPathName} é protegida</h2>
+                                <h2>A url {urlPathName} é protegida</h2>
 
                                 <FormPasswordUrl onSubmit={e => authentication(e)}>
                                     <FormControl classes={{
@@ -601,6 +587,9 @@ function Main() {
                                     </FormControl>
                                     <Button type="submit">Entrar</Button>
                                 </FormPasswordUrl>
+                                <Footer>
+                                    <small>Desenvolvido por: <a href="https://jarodmateus.herokuapp.com/" target="_blanck">Jarod Cavalcante</a> </small>
+                                </Footer>
                             </Drawer>
                         )
                 }
