@@ -1,22 +1,30 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useEffect } from 'react'
 import api from '../../service/api'
 import cripto from '../../util/encripty'
 
 // editor de Código
-import { highlight, languages } from 'prismjs/components/prism-core';
+import { highlight, languages } from 'prismjs/components/prism-core'
 // estilo do editor
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-java';
-import 'prismjs/components/prism-c';
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-sql';
-import './prism.css';
+import 'prismjs/components/prism-clike'
+import 'prismjs/components/prism-javascript'
+import 'prismjs/components/prism-java'
+import 'prismjs/components/prism-c'
+import 'prismjs/components/prism-json'
+import 'prismjs/components/prism-sql'
+import 'prismjs/components/prism-markup'
+import 'prismjs/components/prism-css'
+import 'prismjs/components/prism-typescript'
+import 'prismjs/components/prism-jsx'
+import 'prismjs/components/prism-go'
+import 'prismjs/components/prism-markdown'
+import 'prismjs/components/prism-python'
+import './prism.css'
 
 // styled
-import { Header, CopyPad, MenuLeft, MenuRigth, SharePad, MenuButton, FormControlStyled, FormNewUrl, FormEditUrl, FormPasswordUrl, Button, TelaLoading, Textarea, Footer, HeaderInitialPage, ButtonNewUrl } from './styles'
+import { Header, CopyPad, MenuLeft, MenuRigth, SharePad, MenuButton, FormNewUrl, FormEditUrl, FormPasswordUrl, Button, TelaLoading, Textarea, Footer, HeaderInitialPage, ButtonNewUrl } from './styles'
 // react-icons
 import { MdMenu, MdContentCopy, MdShare, MdArrowBack, MdLockOutline } from 'react-icons/md'
 // material-ui
@@ -80,18 +88,17 @@ function Main() {
     // STATES
     const [format, setFormat] = useState('javascript')
     const [pad, setPad] = useState('')
-    const [padSalvo, setPadSalvo] = useState('')
     const [urlPathName, setUrlPathNamel] = useState(window.location.pathname)
     const [url, setUrl] = useState('')
     const [showMenu, setShowMenu] = useState(true)
     const [loading, setLoading] = useState(true)
-    const [urlExists, setUrlExists] = useState(true)
     const [password, setPassword] = useState('')
     const [secure, setSecure] = useState(false)
     const [expiration, setExpiration] = useState('')
     const [passed, setPassed] = useState(true)
     const [initialPage, setInitialPage] = useState(true)
     const [token, setToken] = useState(null)
+
 
     // FUNÇÕES
     useEffect(() => {
@@ -246,7 +253,8 @@ function Main() {
         const passwords = [
             '123', '1234', '12345', '123456', '1234567', '12345678',
             '123456789', 'qwe123', '321', '4321', '54321', '654321', '7654321',
-            '87654321', '987456321', 'senha', 'abc', 'abcd', 'password'
+            '87654321', '987456321', 'senha', 'abc', 'abcd', 'password', 'qwerty',
+            '1111', 'iloveyou', 'admin', 'abc123', 'qwerty123'
         ]
 
         const segura = passwords.find((senha) => senha === password)
@@ -433,10 +441,31 @@ function Main() {
                                                     json
                                                 </MenuItem>
                                                 <MenuItem value="c">
-                                                    C
+                                                    c
+                                                </MenuItem>
+                                                <MenuItem value="css">
+                                                    css
                                                 </MenuItem>
                                                 <MenuItem value="sql">
-                                                    SQL
+                                                    slq
+                                                </MenuItem>
+                                                <MenuItem value="markup">
+                                                    html/markup
+                                                </MenuItem>
+                                                <MenuItem value="typescript">
+                                                    typescript
+                                                </MenuItem>
+                                                <MenuItem value="jsx">
+                                                    jsx
+                                                </MenuItem>
+                                                <MenuItem value="go">
+                                                    GO
+                                                </MenuItem>
+                                                <MenuItem value="markdown">
+                                                    markdown
+                                                </MenuItem>
+                                                <MenuItem value="python">
+                                                    python
                                                 </MenuItem>
                                             </Select>
                                         </FormControl>
