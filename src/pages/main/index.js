@@ -16,7 +16,7 @@ import 'prismjs/components/prism-sql';
 import './prism.css';
 
 // styled
-import { Header, CopyPad, MenuLeft, MenuRigth, SharePad, MenuButton, FormControlStyled, FormNewUrl, FormEditUrl, FormPasswordUrl, Button, TelaLoading, Textarea, Footer, HeaderInitialPage } from './styles'
+import { Header, CopyPad, MenuLeft, MenuRigth, SharePad, MenuButton, FormControlStyled, FormNewUrl, FormEditUrl, FormPasswordUrl, Button, TelaLoading, Textarea, Footer, HeaderInitialPage, ButtonNewUrl } from './styles'
 // react-icons
 import { MdMenu, MdContentCopy, MdShare, MdArrowBack, MdLockOutline } from 'react-icons/md'
 // material-ui
@@ -243,6 +243,18 @@ function Main() {
      */
     async function createUrlSubmit(e) {
         e.preventDefault()
+        const passwords = [
+            '123', '1234', '12345', '123456', '1234567', '12345678',
+            '123456789', 'qwe123', '321', '4321', '54321', '654321', '7654321',
+            '87654321', '987456321', 'senha', 'abc', 'abcd', 'password'
+        ]
+
+        const segura = passwords.find((senha) => senha === password)
+
+        if (segura) {
+            alert('Ops, coloque uma senha mais segura!')
+            return
+        }
 
         const responseExistsUrl = await api.post(`/exists`, {
             url: url
@@ -431,6 +443,7 @@ function Main() {
 
                                         <Button onClick={() => salva()}>Salvar</Button>
                                     </FormEditUrl>
+                                    <ButtonNewUrl onClick={() => { window.location.href = '/' }}>Nova Url</ButtonNewUrl>
                                     <Footer>
                                         <small>Desenvolvido por: <a href="https://jarodmateus.herokuapp.com/" target="_blanck">Jarod Cavalcante</a> </small>
                                     </Footer>

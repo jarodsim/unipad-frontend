@@ -67,7 +67,7 @@ export const FormControlStyled = styled(FormControl)`
 
 export const FormNewUrl = styled.form`
     width: 100%;
-    height: 700px;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,7 +80,7 @@ export const FormNewUrl = styled.form`
 
 export const FormEditUrl = styled.div`
     width: 100%;
-    height: 700px;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -88,6 +88,10 @@ export const FormEditUrl = styled.div`
 
     h2{
         width: 90%;
+    }
+
+    @media screen and (max-width: 600px){
+        height: auto;
     }
 `
 
@@ -106,6 +110,26 @@ export const FormPasswordUrl = styled.form`
 
 export const Button = styled.button`
     width: 80%;
+    height: 45px;
+    background-color: transparent;
+    color: #FFF;
+    border: none;
+    border: solid 1px #f1faee;
+    border-radius: 4px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    text-transform: uppercase;
+
+    &:hover{
+        background-color: #44B2CC;
+        border-width: 2px;
+    }
+`
+
+export const ButtonNewUrl = styled.button`
+    width: 80%;
+    margin: auto;
     height: 45px;
     background-color: transparent;
     color: #FFF;
