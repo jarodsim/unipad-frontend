@@ -135,7 +135,11 @@ function Main() {
      * @param {urlPathName} url 
      */
     async function getUnipadData(url) {
-        const tokenLocalStorage = localStorage.getItem('token')
+        let tokenLocalStorage = localStorage.getItem('token')
+
+        if(tokenLocalStorage === 'Bearer undefined'){
+            tokenLocalStorage = null
+        }
 
         if (tokenLocalStorage !== null) {
 
@@ -156,7 +160,7 @@ function Main() {
                 return
             }
 
-            if (unipad.success === false && unipad.description === 'id pertencente à outra url') {
+            if (unipad.success === false && unipad.secure === false && unipad.description === 'id pertencente à outra url') {
                 authUrl(urlPathName, '027094dad39dc2757c1d3fa235e12f70')
                 getUnipadData(urlPathName)
                 return
@@ -185,6 +189,7 @@ function Main() {
             if (unipad.secure) {
                 setPassed(false)
                 setLoading(false)
+                return
             }
 
             // efetuando autenticação com a senha padrão
@@ -561,10 +566,31 @@ function Main() {
                                                         json
                                                 </MenuItem>
                                                     <MenuItem value="c">
-                                                        C
+                                                        c
+                                                </MenuItem>
+                                                    <MenuItem value="css">
+                                                        css
                                                 </MenuItem>
                                                     <MenuItem value="sql">
-                                                        SQL
+                                                        slq
+                                                </MenuItem>
+                                                    <MenuItem value="markup">
+                                                        html/markup
+                                                </MenuItem>
+                                                    <MenuItem value="typescript">
+                                                        typescript
+                                                </MenuItem>
+                                                    <MenuItem value="jsx">
+                                                        jsx
+                                                </MenuItem>
+                                                    <MenuItem value="go">
+                                                        GO
+                                                </MenuItem>
+                                                    <MenuItem value="markdown">
+                                                        markdown
+                                                </MenuItem>
+                                                    <MenuItem value="python">
+                                                        python
                                                 </MenuItem>
                                                 </Select>
                                             </FormControl>
