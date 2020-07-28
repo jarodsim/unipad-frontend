@@ -24,7 +24,10 @@ import 'prismjs/components/prism-python'
 import './prism.css'
 
 // styled
-import { Header, CopyPad, MenuLeft, MenuRigth, SharePad, MenuButton, FormNewUrl, FormEditUrl, FormPasswordUrl, Button, TelaLoading, Textarea, Footer, HeaderInitialPage, ButtonNewUrl } from './styles'
+import { Header, CopyPad, MenuLeft, MenuRigth, SharePad, MenuButton, FormNewUrl, FormEditUrl, FormPasswordUrl, Button, Textarea, Footer, ButtonNewUrl } from './styles'
+//components
+import MainHeader from '../../components/MainHeader'
+import Loading from '../../components/Loading'
 // react-icons
 import { MdMenu, MdContentCopy, MdShare, MdArrowBack, MdLockOutline } from 'react-icons/md'
 // material-ui
@@ -121,7 +124,7 @@ function Main() {
                     // caso a url exista
                 } else {
                     (async () => {
-                        await getUnipadData(urlPathName)
+                        await getUnipadData(urlPathName, unipad)
                     })()
                 }
             })()
@@ -132,16 +135,23 @@ function Main() {
 
     /**
      * recebe a url por parâmetro e busca os dados da mesma
-     * @param {urlPathName} url 
+     * @param {urlPathName} url
+     * @param {existsData} unipad  
      */
-    async function getUnipadData(url) {
+    async function getUnipadData(url, existsData) {
         let tokenLocalStorage = localStorage.getItem('token')
 
-        if(tokenLocalStorage === 'Bearer undefined'){
+        if (tokenLocalStorage === 'Bearer undefined') {
             tokenLocalStorage = null
         }
 
         if (tokenLocalStorage !== null) {
+
+            const responseUrlExists = await api.post(`/exists`, {
+                url
+            })
+
+            const urlExists = responseUrlExists.data
 
             const response = await api.get(`${url}`, {
                 headers: {
@@ -160,7 +170,13 @@ function Main() {
                 return
             }
 
-            if (unipad.success === false && unipad.secure === false && unipad.description === 'id pertencente à outra url') {
+            if (unipad.success === false && urlExists.secure === false && unipad.description === 'id pertencente à outra url') {
+                authUrl(urlPathName, '027094dad39dc2757c1d3fa235e12f70')
+                getUnipadData(urlPathName)
+                return
+            }
+
+            if (unipad.success === false && urlExists.secure === false) {
                 authUrl(urlPathName, '027094dad39dc2757c1d3fa235e12f70')
                 getUnipadData(urlPathName)
                 return
@@ -181,11 +197,7 @@ function Main() {
 
         } else {
 
-            const responseExistsUrl = await api.post(`/exists`, {
-                url: url
-            })
-
-            const unipad = responseExistsUrl.data
+            const unipad = existsData
             if (unipad.secure) {
                 setPassed(false)
                 setLoading(false)
@@ -217,6 +229,7 @@ function Main() {
             setFormat(unipadLoged.format)
             setInitialPage(false)
             setPassed(true)
+            setShowMenu(false)
             setLoading(false)
             return
         }
@@ -344,10 +357,7 @@ function Main() {
             <ThemeProvider theme={theme}>
                 {loading ? (
                     <>
-                        <TelaLoading>
-                            <CircularProgress color="secondary" />
-                            <h1>Carregando pad...</h1>
-                        </TelaLoading>
+                        <Loading />
                     </>
                 ) :
                     passed ? (
@@ -397,9 +407,7 @@ function Main() {
                                 </>
 
                             ) : (
-                                    <HeaderInitialPage>
-                                        <h1 onClick={() => { window.location.href = '/' }}>UNIPAD</h1>
-                                    </HeaderInitialPage>
+                                    <MainHeader />
                                 )}
 
 

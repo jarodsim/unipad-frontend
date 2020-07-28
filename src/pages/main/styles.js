@@ -13,17 +13,6 @@ export const Header = styled.header`
     background: linear-gradient(90deg, #2193B0 0%, #6DD5ED 99.37%);
 `
 
-export const HeaderInitialPage = styled.header`
-    width: 100%;
-    height: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #FFF;
-    background: linear-gradient(90deg, #2193B0 0%, #6DD5ED 99.37%);
-`
-
-
 export const CopyPad = styled(CopyToClipboard)`
     background-color: transparent;
     border: none;
@@ -147,17 +136,6 @@ export const ButtonNewUrl = styled.button`
     }
 `
 
-export const TelaLoading = styled.div`
-    width: 100%;
-    height: 100vh;
-    margin: auto;
-    color: #FFF;
-    background-color: #6DD5ED;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`
 export const Textarea = styled(Editor)`
     width: 100%;
     min-height: 100vh;
