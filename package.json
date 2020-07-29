@@ -1,6 +1,6 @@
 {
-  "name": "frontend_unipad",
-  "version": "0.0.5",
+  "name": "unipad",
+  "version": "0.0.6",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",

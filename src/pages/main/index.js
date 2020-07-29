@@ -100,7 +100,6 @@ function Main() {
     const [expiration, setExpiration] = useState('')
     const [passed, setPassed] = useState(true)
     const [initialPage, setInitialPage] = useState(true)
-    const [token, setToken] = useState(null)
 
 
     // FUNÇÕES
@@ -121,8 +120,8 @@ function Main() {
                 // caso url não exista
                 if (!unipad.success && unipad.description === 'url nao existe') {
                     await createUrl(urlPathName)
-                    // caso a url exista
                 } else {
+                    // caso a url exista
                     (async () => {
                         await getUnipadData(urlPathName, unipad)
                     })()
@@ -139,8 +138,11 @@ function Main() {
      * @param {existsData} unipad  
      */
     async function getUnipadData(url, existsData) {
+
+        // verificando se há tokens no localStorage
         let tokenLocalStorage = localStorage.getItem('token')
 
+        // Caso dê problemas como token ele será ignorado
         if (tokenLocalStorage === 'Bearer undefined') {
             tokenLocalStorage = null
         }
@@ -153,6 +155,7 @@ function Main() {
 
             const urlExists = responseUrlExists.data
 
+            // pegando dados da url utilizando o token do localStorage
             const response = await api.get(`${url}`, {
                 headers: {
                     authorization: tokenLocalStorage
@@ -160,6 +163,7 @@ function Main() {
             })
 
             const unipad = response.data
+            // caso sucesso
             if (unipad.success && unipad.description === 'url encontrada e retornada com sucesso') {
                 setPad(unipad.pad)
                 setFormat(unipad.format)
@@ -170,34 +174,51 @@ function Main() {
                 return
             }
 
+            /**
+             * caso erro,a url não seja protegida por senha e a descirção bata
+             * será feito login com a senha padrão e a função é chamada novamente
+             */
             if (unipad.success === false && urlExists.secure === false && unipad.description === 'id pertencente à outra url') {
                 authUrl(urlPathName, '027094dad39dc2757c1d3fa235e12f70')
                 getUnipadData(urlPathName)
                 return
             }
 
+            /**
+             * caso erro e a url seja desprotegida (e a condição de cima seja false)
+             * será feito login com a senha padrão e a função é chamada novamente
+             */
             if (unipad.success === false && urlExists.secure === false) {
                 authUrl(urlPathName, '027094dad39dc2757c1d3fa235e12f70')
                 getUnipadData(urlPathName)
                 return
             }
 
+            /**
+             * caso erro e o token seja inválido a tela de login aparecerá
+             */
             if (unipad.success === false && unipad.description === 'token inválido') {
                 setLoading(false)
                 setPassed(false)
                 return
             }
 
+            /**
+             * caso todas as condições falhe, a tela de login será exibida
+             */
             if (unipad.success === false) {
                 setLoading(false)
                 setPassed(false)
                 return
             }
-
-
         } else {
 
+            /**
+             * caso não haja token
+             */
             const unipad = existsData
+
+            // se a url for protegida por senha, irá exibir a tela de login
             if (unipad.secure) {
                 setPassed(false)
                 setLoading(false)
@@ -212,7 +233,6 @@ function Main() {
 
             verification = verification.data
 
-            setToken(`Bearer ${verification.token}`)
             localStorage.setItem('token', `Bearer ${verification.token}`)
 
             // pegando dados do pad
@@ -255,7 +275,6 @@ function Main() {
 
         verification = verification.data
 
-        setToken(`Bearer ${verification.token}`)
         localStorage.setItem('token', `Bearer ${verification.token}`)
 
         await getUnipadData(url)
@@ -268,6 +287,8 @@ function Main() {
      */
     async function createUrlSubmit(e) {
         e.preventDefault()
+
+        // senhas masi utilizadas e fáceis de quebrar para verificar se a senha do user é segura
         const passwords = [
             '123', '1234', '12345', '123456', '1234567', '12345678',
             '123456789', 'qwe123', '321', '4321', '54321', '654321', '7654321',
@@ -282,6 +303,7 @@ function Main() {
             return
         }
 
+        // verifica se a url já exista, caso exista o usuário é redirecionado à página da mesma
         const responseExistsUrl = await api.post(`/exists`, {
             url: url
         })
@@ -291,6 +313,10 @@ function Main() {
             return
         }
 
+        /**
+         * encripta a senha caso o usuário digite alguma senha
+         * caso o usuário não coloque uma senha, a senha padrão será 123, encriptada
+         */
         let passwordEncripted = null
         if (password.length > 0) {
             passwordEncripted = cripto(password)
@@ -298,6 +324,7 @@ function Main() {
             passwordEncripted = '027094dad39dc2757c1d3fa235e12f70'
         }
 
+        // criando a url
         await api.post(`/new`, {
             url,
             format,
@@ -306,12 +333,15 @@ function Main() {
             password: passwordEncripted
         })
 
+        // efetuando login para que o token já esteja no localStorage para não precisar fazer login novamente
         authUrl(url, passwordEncripted)
 
+        // redirecionando o user para a página da URL
         window.location.pathname = url
     }
 
     /**
+     * autentica o user e guarda o token no localStorage
      * @param {url} url
      * @param {password} passwordEncripted
      */
@@ -323,12 +353,17 @@ function Main() {
 
         const auth = responseAuth.data
 
-        setToken(`Bearer ${auth.token}`)
         localStorage.setItem('token', `Bearer ${auth.token}`)
     }
 
+    /**
+     * verifica se a senha está correta e autentica o user
+     * @param {peventDefault} e 
+     */
     async function authentication(e) {
         e.preventDefault()
+
+        // encripta o password
         const passwordEncripted = cripto(password)
 
         const responseAuth = await api.post(`/auth`, {
@@ -341,17 +376,42 @@ function Main() {
         if (auth.success === false) {
             alert('Ops! Tem certeza que a senha é essa?')
         } else {
-            setToken(`Bearer ${auth.token}`)
             localStorage.setItem('token', `Bearer ${auth.token}`)
             getUnipadData(urlPathName)
         }
     }
 
-    async function salva() {
+    // debounce básico
+    function debounce(func, wait, immediate) {
+        var timeout;
+        return function () {
+            var context = this, args = arguments;
+            var later = function () {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    };
+
+    /**
+     * a cada alteração no pad, atualiza o mesmo
+     */
+    const salva = debounce(async function () {
         await api.put(`/edit`, {
             pad, url: urlPathName, format
         })
-    }
+    }, 500)
+
+
+    // async function salva() {
+    //     await api.put(`/edit`, {
+    //         pad, url: urlPathName, format
+    //     })
+    // }
     return (
         <>
             <ThemeProvider theme={theme}>

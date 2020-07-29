@@ -1,24 +1,28 @@
 #  Unipad
-O [unipad](https://unipad.herokuapp.com/) é um serviço para compartilhamento de códigos de forma simples, inspirado no [dontpad](http://dontpad.com/). Nele você cria uma URL para o seu bloco de notas, que, sucessivamente você pode colocar o que quiser, desde que seja em texto.
+O [unipad](https://unipad.herokuapp.com/) é um serviço para compartilhamento de códigos de forma simples, inspirado no [dontpad](http://dontpad.com/). Nele você cria uma URL para o seu bloco de código, que, sucessivamente você pode colocar o que quiser, desde que seja em texto e formata-lo de acordo com a extenção do seu arquivo/código. Exemplo: o trexo de código que você vai compartilhar/colocar no pad é um código em javascript, logo, a extenção para formatação deverá ser javascript.
 
 ### Diferenças entre o Unipad e o Dontpad
 | Ação | Dontpad | Unipad|
 |--|--| --|
-| Pode proteger a URL com senha | Não | Sim  |
+|Pode proteger a URL com senha | Não | Sim  |
 |Pode definir uma data para expiração da URL|Não| Sim
-|Formata o conteúdo de acordo com o formato do arquivo|Não| Em testes
+|Formata o conteúdo de acordo com o formato do arquivo|Não| Sim
 
 ---
 ### Desenvolvimento
 #### Backend
 - *express* para o servidor web
-- Mongoose para conexão com o MongoDB
-- Nodemon para atualizar em tempo real
+- *Mongoose* para conexão com o MongoDB
+- *Nodemon* para atualizar em tempo real
 
 #### Frontend
-- ReactJs
-- Axios para conexão com a API
-- Biblioteca crypto para criptografar as senhas
+- *ReactJs*
+- *Axios* para conexão com a API
+- Biblioteca *crypto* para criptografar as senhas
+- *prismjs* para colorir o código de acordo com o formato do mesmo (simular uma IDE)
+- *styled-componnets* para adicinar estilo aos componentes
+- *react-copy-to-clipboard* para função de copiar o código digitado e compartilhar a url
+- *material-ui* para estilização e uso de componetes como inputs, inputs de data e menu
 #### Hospedagem
 Ambos frontend e backend estão hospedados no [Heroku](https://heroku.com/)  
 
@@ -35,4 +39,4 @@ O banco de dados utilizado é o MongoDb. Utilizo a versão free (512mb) do Mongo
  - No frontend rode o comando `yarn start` para iniciar a aplicação que estará rodando em `Localhost:3000`
 
 
-Jarod Cavalcante - 2020
+© Jarod Cavalcante - 2020
