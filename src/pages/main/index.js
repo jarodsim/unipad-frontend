@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react'
 import api from '../../service/api'
 import cripto from '../../util/encripty'
+import dateFormated from '../../util/dateFomatSelect'
 
 // editor de Código
 import { highlight, languages } from 'prismjs/components/prism-core'
@@ -670,7 +671,7 @@ function Main() {
                                                     variant="outlined"
                                                     label="Data de Expiração"
                                                     type="datetime-local"
-                                                    defaultValue="2020-01-01T12:00"
+                                                    defaultValue={dateFormated}
                                                     onChange={(e) => setExpiration(e.target.value)}
                                                 />
                                             </FormControl>
