@@ -1,23 +1,36 @@
 /**
- * Formata para String e adiciona mais um (1) dia para select de data do material-ui
+ * Formata para String para o select do material-ui
  */
 
 let data = new Date()
-let hora = data.getHours().toString()
-let minutos = data.getMinutes().toString()
-let ano = data.getFullYear().toString()
+let hora = data.getHours()
+let minutos = data.getMinutes()
+let ano = data.getFullYear()
 let mes = data.getMonth() + 1
-let dia = data.getDate() + 1
-dia = dia.toString()
+let dia = data.getDate()
 let dataFormatada = '2017-05-24T10:30'
 
-if (mes >= 10) {
-    mes = mes.toString()
-    dataFormatada = (ano + '-' + mes + '-' + dia + 'T' + hora + ':' + minutos).toString()
-} else {
-    mes = mes.toString()
-    dataFormatada = (ano + '-0' + mes + '-' + dia + 'T' + hora + ':' + minutos).toString()
+if (hora <= 9) {
+    hora = '0' + hora
 }
 
+if (dia >= 32) {
+    dia = '01'
+    mes = mes + 1
+}
+
+if (mes >= 10) {
+    if (minutos <= 9) {
+        dataFormatada = (ano + '-' + mes + '-' + dia + 'T' + hora + ':0' + minutos).toString()
+    } else {
+        dataFormatada = (ano + '-' + mes + '-' + dia + 'T' + hora + ':' + minutos).toString()
+    }
+} else {
+    if (minutos <= 9) {
+        dataFormatada = (ano + '-0' + mes + '-' + dia + 'T' + hora + ':0' + minutos).toString()
+    } else {
+        dataFormatada = (ano + '-0' + mes + '-' + dia + 'T' + hora + ':' + minutos).toString()
+    }
+}
 
 export default dataFormatada

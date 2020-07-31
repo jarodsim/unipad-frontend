@@ -63,7 +63,7 @@ export const FormNewUrl = styled.form`
     text-align: center;
 
     h2{
-        width: 90%;
+        width: 80%;
     }
 `
 
@@ -114,6 +114,10 @@ export const Button = styled.button`
         background-color: #44B2CC;
         border-width: 2px;
     }
+
+    @media screen and (max-width: 600px){
+        width: 90%;
+    }
 `
 
 export const ButtonNewUrl = styled.button`
@@ -134,6 +138,10 @@ export const ButtonNewUrl = styled.button`
         background-color: #44B2CC;
         border-width: 2px;
     }
+
+    @media screen and (max-width: 600px){
+        width: 90%;
+    }
 `
 
 export const Textarea = styled(Editor)`
@@ -149,9 +157,10 @@ export const Textarea = styled(Editor)`
 
 export const Footer = styled.footer`
     width: 100%;
-    height: 40px;
+    height: 100px;
     bottom: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;

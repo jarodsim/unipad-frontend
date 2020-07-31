@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-
 import React, { useState, useEffect } from 'react'
 import api from '../../service/api'
 import cripto from '../../util/encripty'
@@ -32,7 +31,7 @@ import Loading from '../../components/Loading'
 // react-icons
 import { MdMenu, MdContentCopy, MdShare, MdArrowBack, MdLockOutline } from 'react-icons/md'
 // material-ui
-import { Select, MenuItem, InputLabel, Drawer, Divider, FormControl, TextField, InputAdornment, CircularProgress } from '@material-ui/core'
+import { Select, MenuItem, InputLabel, Drawer, Divider, FormControl, TextField, InputAdornment, CircularProgress, Modal } from '@material-ui/core'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 
 import { theme } from '../tema'
@@ -68,8 +67,10 @@ function Main() {
             padding: theme.spacing(0, 1),
             // necessary for content to be below app bar
             ...theme.mixins.toolbar,
-            justifyContent: 'space-between',
+            justifyContent: 'center',
             height: '70px',
+            width: '80%',
+            margin: '0 auto 0 auto',
             textAlign: 'center'
         },
         inputLabel: {
@@ -101,7 +102,7 @@ function Main() {
     const [expiration, setExpiration] = useState('')
     const [passed, setPassed] = useState(true)
     const [initialPage, setInitialPage] = useState(true)
-
+    const [openModal, setOpenModal] = useState(false)
 
     // FUNÇÕES
     useEffect(() => {
@@ -484,7 +485,7 @@ function Main() {
                                     }}
                                 >
                                     <div className={classes.drawerHeader}>
-                                        <h3 onClick={() => { window.location.href = '/' }}>UNIPAD</h3>
+                                        <h3 onClick={() => { window.location.href = '/' }}>CONFIGURAÇÃO DA URL</h3>
 
                                         <MenuButton onClick={e => setShowMenu((prevState) => !prevState)}>
                                             <MdArrowBack size={30} color="#FFF" />
@@ -562,7 +563,7 @@ function Main() {
                                         }}
                                     >
                                         <div className={classes.drawerHeader}>
-                                            <h3>UNIPAD</h3>
+                                            <h3>NOVA URL</h3>
                                         </div>
                                         <Divider />
                                         <FormNewUrl onSubmit={(e) => createUrlSubmit(e)}>
@@ -673,6 +674,9 @@ function Main() {
                                                     type="datetime-local"
                                                     defaultValue={dateFormated}
                                                     onChange={(e) => setExpiration(e.target.value)}
+                                                    inputProps={{
+                                                        min: dateFormated
+                                                    }}
                                                 />
                                             </FormControl>
 
