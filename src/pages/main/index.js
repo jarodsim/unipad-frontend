@@ -31,8 +31,8 @@ import Loading from '../../components/Loading'
 // react-icons
 import { MdMenu, MdContentCopy, MdShare, MdArrowBack, MdLockOutline } from 'react-icons/md'
 // material-ui
-import { Select, MenuItem, InputLabel, Drawer, Divider, FormControl, TextField, InputAdornment, CircularProgress, Modal } from '@material-ui/core'
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { Select, MenuItem, InputLabel, Drawer, Divider, FormControl, TextField, InputAdornment } from '@material-ui/core'
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 
 import { theme } from '../tema'
 
@@ -438,10 +438,9 @@ function Main() {
 
                                         <MenuRigth>
                                             <CopyPad text={pad}>
-                                                <button onClick={() => alert('PAD copiado para a sua área de transfrência')}>
+                                                <button onClick={() => alert('Pad copiado para a sua área de transferência')}>
                                                     <MdContentCopy size={30} color="#FFF" />
                                                 </button>
-
                                             </CopyPad>
 
                                             <SharePad>

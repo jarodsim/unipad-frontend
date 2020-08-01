@@ -19,6 +19,10 @@ if (dia >= 32) {
     mes = mes + 1
 }
 
+if (dia <= 9) {
+    dia = '0' + dia
+}
+
 if (mes >= 10) {
     if (minutos <= 9) {
         dataFormatada = (ano + '-' + mes + '-' + dia + 'T' + hora + ':0' + minutos).toString()
