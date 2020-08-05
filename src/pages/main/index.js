@@ -104,6 +104,7 @@ function Main() {
     const [passed, setPassed] = useState(true)
     const [initialPage, setInitialPage] = useState(true)
     const [openModal, setOpenModal] = useState(false)
+    const [disableInput, setDisableInput] = useState(false)
 
     // FUNÇÕES
     useEffect(() => {
@@ -290,6 +291,7 @@ function Main() {
      */
     async function createUrlSubmit(e) {
         e.preventDefault()
+        setDisableInput(true)
 
         // senhas masi utilizadas e fáceis de quebrar para verificar se a senha do user é segura
         const passwords = [
@@ -364,6 +366,7 @@ function Main() {
      * @param {peventDefault} e 
      */
     async function authentication(e) {
+        setDisableInput(true)
         e.preventDefault()
 
         // encripta o password
@@ -378,6 +381,7 @@ function Main() {
 
         if (auth.success === false) {
             alert('Ops! Tem certeza que a senha é essa?')
+            setDisableInput(false)
         } else {
             localStorage.setItem('token', `Bearer ${auth.token}`)
             getUnipadData(urlPathName)
@@ -578,6 +582,7 @@ function Main() {
                                                     type="text"
                                                     variant="outlined"
                                                     required
+                                                    disabled={disableInput}
                                                     classes={{
                                                         root: classes.inputLabel
                                                     }}
@@ -690,6 +695,7 @@ function Main() {
                         </>
 
                     ) : (
+                            // MENU PARA AUTENTICAÇÃO
                             <Drawer
                                 variant="persistent"
                                 anchor="left"
@@ -699,7 +705,7 @@ function Main() {
                                 }}
                             >
                                 <div className={classes.drawerHeader}>
-                                    <h3>UNIPAD</h3>
+                                    <h3 onClick={() => { window.location.href = '/' }}>UNIPAD</h3>
                                 </div>
                                 <Divider />
                                 <h2>A url {urlPathName} é protegida</h2>
@@ -712,6 +718,7 @@ function Main() {
                                             label="Senha"
                                             type="password"
                                             variant="outlined"
+                                            disabled={disableInput}
                                             classes={{
                                                 root: classes.inputLabel
                                             }}
