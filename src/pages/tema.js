@@ -6,7 +6,7 @@ export const theme = createMuiTheme({
             main: '#f1faee',
         },
         secondary: {
-            main: '#1976d2',
+            main: '#ff2c06',
         },
     },
     typography: {
@@ -19,13 +19,14 @@ export const theme = createMuiTheme({
         MuiOutlinedInput: {
             root: {
                 backgroundColor: 'transparent',
+                color: 'white'
             }
         },
         MuiInputLabel: {
             root: {
                 fontSize: '18px',
                 color: 'white'
-            }
+            },
         },
     },
 });

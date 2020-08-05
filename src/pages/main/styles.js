@@ -10,7 +10,7 @@ export const Header = styled.header`
     justify-content: space-between;
     align-items: center;
     color: #FFF;
-    background: linear-gradient(90deg, #2193B0 0%, #6DD5ED 99.37%);
+    background-image: radial-gradient( circle 972.6px at 10% 20%,  rgba(243,0,75,1) 0%, rgba(255,93,75,1) 90% );
 `
 
 export const CopyPad = styled(CopyToClipboard)`
@@ -111,7 +111,7 @@ export const Button = styled.button`
     text-transform: uppercase;
 
     &:hover{
-        background-color: #44B2CC;
+        background-color: #ff2c06;
         border-width: 2px;
     }
 
@@ -135,7 +135,7 @@ export const ButtonNewUrl = styled.button`
     text-transform: uppercase;
 
     &:hover{
-        background-color: #44B2CC;
+        background-color: #ff2c06;
         border-width: 2px;
     }
 
@@ -146,7 +146,7 @@ export const ButtonNewUrl = styled.button`
 
 export const Textarea = styled(Editor)`
     width: 100%;
-    min-height: 100vh;
+    min-height: 90vh;
     border-radius: 2px;
     background-color: #FFF;
     color: black;
