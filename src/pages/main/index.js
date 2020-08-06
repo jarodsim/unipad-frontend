@@ -541,7 +541,7 @@ function Main() {
                                                     GO
                                                 </MenuItem>
                                                 <MenuItem value="markdown">
-                                                    markdown
+                                                    text/markdown
                                                 </MenuItem>
                                                 <MenuItem value="python">
                                                     python
@@ -662,7 +662,7 @@ function Main() {
                                                         GO
                                                 </MenuItem>
                                                     <MenuItem value="markdown">
-                                                        markdown
+                                                        text/markdown
                                                 </MenuItem>
                                                     <MenuItem value="python">
                                                         python
