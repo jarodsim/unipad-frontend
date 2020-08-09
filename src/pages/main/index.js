@@ -28,6 +28,7 @@ import { Header, CopyPad, MenuLeft, MenuRigth, SharePad, MenuButton, FormNewUrl,
 //components
 import MainHeader from '../../components/MainHeader'
 import Loading from '../../components/Loading'
+import Modal from '../../components/Modal'
 // react-icons
 import { MdMenu, MdContentCopy, MdShare, MdArrowBack, MdLockOutline } from 'react-icons/md'
 // material-ui
@@ -105,35 +106,38 @@ function Main() {
     const [initialPage, setInitialPage] = useState(true)
     const [openModal, setOpenModal] = useState(false)
     const [disableInput, setDisableInput] = useState(false)
+    const [showAlertUrlExpired, setShowAlerUrlExpired] = useState(false)
 
     // FUNÇÕES
     useEffect(() => {
         (async () => {
-            api.delete('/expiration')
-        })()
 
-        // verifica se é uma rota
-        if (urlPathName !== '/') {
-            (async () => {
+            await api.delete('/expiration')
+
+            // verifica se é uma rota
+            if (urlPathName !== '/') {
                 const response = await api.post(`/exists`, {
                     url: urlPathName
                 })
-
                 const unipad = response.data
+
+                // validar se a url esta expirada e exiba o alert
+                await showAlertExpiredUrl(urlPathName)
 
                 // caso url não exista
                 if (!unipad.success && unipad.description === 'url nao existe') {
                     await createUrl(urlPathName)
                 } else {
+                    // validar se a url esta expirada e exiba o alert
+                    await showAlertExpiredUrl(urlPathName)
+
                     // caso a url exista
-                    (async () => {
-                        await getUnipadData(urlPathName, unipad)
-                    })()
+                    await getUnipadData(urlPathName, unipad)
                 }
-            })()
-        } else {
-            setLoading(false)
-        }
+            } else {
+                setLoading(false)
+            }
+        })()
     }, [])
 
     /**
@@ -142,7 +146,6 @@ function Main() {
      * @param {existsData} unipad  
      */
     async function getUnipadData(url, existsData) {
-
         // verificando se há tokens no localStorage
         let tokenLocalStorage = localStorage.getItem('token')
 
@@ -152,11 +155,9 @@ function Main() {
         }
 
         if (tokenLocalStorage !== null) {
-
             const responseUrlExists = await api.post(`/exists`, {
                 url
             })
-
             const urlExists = responseUrlExists.data
 
             // pegando dados da url utilizando o token do localStorage
@@ -165,8 +166,8 @@ function Main() {
                     authorization: tokenLocalStorage
                 }
             })
-
             const unipad = response.data
+
             // caso sucesso
             if (unipad.success && unipad.description === 'url encontrada e retornada com sucesso') {
                 setPad(unipad.pad)
@@ -234,7 +235,6 @@ function Main() {
                 url,
                 password: '027094dad39dc2757c1d3fa235e12f70'
             })
-
             verification = verification.data
 
             localStorage.setItem('token', `Bearer ${verification.token}`)
@@ -245,8 +245,6 @@ function Main() {
                     authorization: `Bearer ${verification.token}`
                 }
             })
-
-
             const unipadLoged = response.data
 
             setPad(unipadLoged.pad)
@@ -276,11 +274,9 @@ function Main() {
             url,
             password: '027094dad39dc2757c1d3fa235e12f70'
         })
-
         verification = verification.data
 
         localStorage.setItem('token', `Bearer ${verification.token}`)
-
         await getUnipadData(url)
         return
     }
@@ -292,6 +288,7 @@ function Main() {
     async function createUrlSubmit(e) {
         e.preventDefault()
         setDisableInput(true)
+        await showAlertExpiredUrl(url)
 
         // senhas masi utilizadas e fáceis de quebrar para verificar se a senha do user é segura
         const passwords = [
@@ -300,7 +297,6 @@ function Main() {
             '87654321', '987456321', 'senha', 'abc', 'abcd', 'password', 'qwerty',
             '1111', 'iloveyou', 'admin', 'abc123', 'qwerty123'
         ]
-
         const segura = passwords.find((senha) => senha === password)
 
         if (segura) {
@@ -357,7 +353,6 @@ function Main() {
         })
 
         const auth = responseAuth.data
-
         localStorage.setItem('token', `Bearer ${auth.token}`)
     }
 
@@ -376,7 +371,6 @@ function Main() {
             url: urlPathName,
             password: passwordEncripted
         })
-
         const auth = responseAuth.data
 
         if (auth.success === false) {
@@ -413,12 +407,26 @@ function Main() {
         })
     }, 500)
 
+    /**
+     * função para o modal de aviso de data expirada
+     */
+    const handleClose = () => {
+        setShowAlerUrlExpired(false)
+    }
 
-    // async function salva() {
-    //     await api.put(`/edit`, {
-    //         pad, url: urlPathName, format
-    //     })
-    // }
+    /**
+     * função para verificar se a url esta expirada e exibir para o user
+     * @param {urlPathName} url 
+     */
+    async function showAlertExpiredUrl(url) {
+        const responseExpiredUrl = await api.post('/verifyExpiredUrl', {
+            url: `/pad${url}`
+        })
+
+        if (responseExpiredUrl.data.success && !responseExpiredUrl.data.viwed) {
+            await setShowAlerUrlExpired(true)
+        }
+    }
     return (
         <>
             <ThemeProvider theme={theme}>
@@ -470,6 +478,11 @@ function Main() {
                                             fontSize: 14,
                                         }}
                                     />
+
+                                    {/* MODAL PARA CASO A URL ESTEJA EXPIRADA */}
+                                    {showAlertUrlExpired ? (
+                                        <Modal showAlertUrlExpired={showAlertUrlExpired} handleClose={handleClose} urlPathName={urlPathName} />
+                                    ) : ''}
                                 </>
 
                             ) : (

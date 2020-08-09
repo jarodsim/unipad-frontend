@@ -13,6 +13,10 @@ body {
     padding: 0px;
 }
 
+button{
+    outline: 0;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }
