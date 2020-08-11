@@ -30,9 +30,9 @@ import MainHeader from '../../components/MainHeader'
 import Loading from '../../components/Loading'
 import Modal from '../../components/Modal'
 // react-icons
-import { MdMenu, MdContentCopy, MdShare, MdArrowBack, MdLockOutline } from 'react-icons/md'
+import { MdMenu, MdContentCopy, MdShare, MdArrowBack, MdLockOutline, MdClose } from 'react-icons/md'
 // material-ui
-import { Select, MenuItem, InputLabel, Drawer, Divider, FormControl, TextField, InputAdornment } from '@material-ui/core'
+import { Select, MenuItem, InputLabel, Drawer, Divider, FormControl, TextField, InputAdornment, Snackbar, IconButton } from '@material-ui/core'
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 
 import { theme } from '../tema'
@@ -107,6 +107,7 @@ function Main() {
     const [openModal, setOpenModal] = useState(false)
     const [disableInput, setDisableInput] = useState(false)
     const [showAlertUrlExpired, setShowAlerUrlExpired] = useState(false)
+    const [actionAdvise, setActionAdvise] = useState(false)
 
     // FUNÇÕES
     useEffect(() => {
@@ -415,6 +416,13 @@ function Main() {
     }
 
     /**
+     * função para o modal de aviso de copiado para a área de transferencia
+     */
+    const handleCloseActionAdvise = () => {
+        setActionAdvise(false)
+    }
+
+    /**
      * função para verificar se a url esta expirada e exibir para o user
      * @param {urlPathName} url 
      */
@@ -424,7 +432,7 @@ function Main() {
         })
 
         if (responseExpiredUrl.data.success && !responseExpiredUrl.data.viwed) {
-            await setShowAlerUrlExpired(true)
+            setShowAlerUrlExpired(true)
         }
     }
     return (
@@ -451,19 +459,19 @@ function Main() {
 
                                         <MenuRigth>
                                             <CopyPad text={pad}>
-                                                <button onClick={() => alert('Pad copiado para a sua área de transferência')}>
+                                                <button onClick={() => setActionAdvise(true)}>
                                                     <MdContentCopy size={30} color="#FFF" />
                                                 </button>
                                             </CopyPad>
 
                                             <SharePad>
-                                                <CopyPad text={`unipad.herokuapp.com${urlPathName}`}>
-                                                    <button onClick={() => alert('Link copiado para a sua área de transfrência')}>
+                                                <CopyPad text={`https://unipad.herokuapp.com${urlPathName}`}>
+                                                    <button onClick={() => setActionAdvise(true)}>
                                                         <MdShare size={30} color="#FFF" />
                                                     </button>
-
                                                 </CopyPad>
                                             </SharePad>
+
                                         </MenuRigth>
                                     </Header>
                                     {/* TEXTAREA - PAD */}
@@ -483,6 +491,25 @@ function Main() {
                                     {showAlertUrlExpired ? (
                                         <Modal showAlertUrlExpired={showAlertUrlExpired} handleClose={handleClose} urlPathName={urlPathName} />
                                     ) : ''}
+
+                                    {/* AVISO DE COPIADO PARA A ÁREA DE TRANSFERÊNCIA */}
+                                    <Snackbar
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'right',
+                                        }}
+                                        open={actionAdvise}
+                                        autoHideDuration={5000}
+                                        onClose={handleCloseActionAdvise}
+                                        message="Copiado para sua àrea de transferência"
+                                        action={
+                                            <React.Fragment>
+                                                <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseActionAdvise}>
+                                                    <MdClose fontSize="small" />
+                                                </IconButton>
+                                            </React.Fragment>
+                                        }
+                                    />
                                 </>
 
                             ) : (
@@ -688,7 +715,7 @@ function Main() {
                                             }}>
                                                 <TextField
                                                     variant="outlined"
-                                                    label="Data de Expiração"
+                                                    label="Data de Expiração (opcional)"
                                                     type="datetime-local"
                                                     defaultValue={dateFormated}
                                                     onChange={(e) => setExpiration(new Date(e.target.value))}
