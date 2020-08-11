@@ -101,7 +101,7 @@ function Main() {
     const [loading, setLoading] = useState(true)
     const [password, setPassword] = useState('')
     const [secure, setSecure] = useState(false)
-    const [expiration, setExpiration] = useState('')
+    const [expiration, setExpiration] = useState(null)
     const [passed, setPassed] = useState(true)
     const [initialPage, setInitialPage] = useState(true)
     const [openModal, setOpenModal] = useState(false)
@@ -329,7 +329,7 @@ function Main() {
         await api.post(`/new`, {
             url,
             format,
-            expiration,
+            expiration: expiration !== null ? new Date(expiration.getTime() + 3 * 3600000) : null,
             secure: password.length > 0 ? !secure : false,
             password: passwordEncripted
         })
@@ -691,7 +691,7 @@ function Main() {
                                                     label="Data de Expiração"
                                                     type="datetime-local"
                                                     defaultValue={dateFormated}
-                                                    onChange={(e) => setExpiration(e.target.value)}
+                                                    onChange={(e) => setExpiration(new Date(e.target.value))}
                                                     inputProps={{
                                                         min: dateFormated
                                                     }}
