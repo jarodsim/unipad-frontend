@@ -1,4 +1,7 @@
 #  Unipad
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/045aa4c2702946bcbdda18bad5fa01c6)](https://app.codacy.com/manual/jarodsim/unipad-frontend?utm_source=github.com&utm_medium=referral&utm_content=jarodsim/unipad-frontend&utm_campaign=Badge_Grade_Dashboard)
+
 ![picture](public/LOGO.png)
 
 O [unipad](https://unipad.herokuapp.com/) é um serviço para compartilhamento de códigos de forma simples, inspirado no [dontpad](http://dontpad.com/). Nele você cria uma URL para o seu bloco de código, que, sucessivamente você pode colocar o que quiser, desde que seja em texto e formata-lo de acordo com a extenção do seu arquivo/código. Exemplo: o trexo de código que você vai compartilhar/colocar no pad é um código em javascript, logo, a extenção para formatação deverá ser javascript.
