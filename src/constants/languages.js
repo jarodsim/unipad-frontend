@@ -1,0 +1,15 @@
+export const languages = [
+  'sql',
+  'html',
+  'java',
+  'javascript',
+  'json',
+  'css',
+  'c',
+  'html/markup',
+  'typescript',
+  'jsx',
+  'GO',
+  'text/markdown',
+  'python',
+]
