@@ -3,13 +3,14 @@ import { useState, createContext } from 'react'
 export const MenuContext = createContext()
 
 export function MenuProvider(props) {
-  const [showNewUrlMenu, setShowNewUrlMenu] = useState(true)
+  const [showMenu, setShowMenu] = useState('NEWURL')
 
+  // OPTIONS: 'NEWURL' | 'LOGIN' | 'OPTIONS',
   return (
     <MenuContext.Provider
       value={{
-        showNewUrlMenu,
-        setShowNewUrlMenu,
+        showMenu,
+        setShowMenu,
       }}
     >
       {props.children}

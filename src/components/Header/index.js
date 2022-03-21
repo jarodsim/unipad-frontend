@@ -12,7 +12,6 @@ import Options from '../Options'
 import NewUrl from '../NewUrl'
 import Login from '../Login'
 import useWindowsWidth from '../hooks/useWindowWidth'
-import useVerifyIsPad from '../hooks/useVerifyIsPad'
 import useGetUrl from '../hooks/useGetUrl'
 import copyToClipBoard from '../../util/copyToClipBoard'
 import { MenuContext } from '../../context/menuContext'
@@ -21,10 +20,10 @@ import { AuthContext } from '../../context/authContext'
 export default function Header(props) {
   const [openDrawer] = useState(false)
   const [drawerWidth, setDrawerWidth] = useState(400)
-  const [showNewMenu, setShowNewMenu] = useState(false)
+  const [_showMenu, _setShowMenu] = useState(false)
   const [_logged, _setLogged] = useState(false)
 
-  const { showNewUrlMenu } = useContext(MenuContext)
+  const { showMenu } = useContext(MenuContext)
   const { logged } = useContext(AuthContext)
 
   const windowsWidth = useWindowsWidth()
@@ -58,8 +57,8 @@ export default function Header(props) {
   }, [windowsWidth])
 
   useEffect(() => {
-    setShowNewMenu(showNewUrlMenu)
-  }, [showNewUrlMenu])
+    _setShowMenu(showMenu)
+  }, [showMenu])
 
   useEffect(() => {
     _setLogged(logged)
@@ -133,7 +132,7 @@ export default function Header(props) {
             height: window.innerHeight ? window.innerHeight : 500,
           }}
         >
-          {children(logged, showNewMenu, toggleDrawer)}
+          {children(_logged, _showMenu, toggleDrawer)}
         </Box>
       </Drawer>
       {props.children}
@@ -141,14 +140,12 @@ export default function Header(props) {
   )
 }
 
-const children = (logged, showNewUrlMenu, toggleDrawer) => {
-  if (logged || window.location.pathname === '/' || showNewUrlMenu) {
-    if (showNewUrlMenu) {
-      return <NewUrl />
-    } else {
-      return <Options handleCloseMenu={toggleDrawer('left', false)} />
-    }
-  } else if (!logged && window.location.pathname !== '/' && !showNewUrlMenu) {
+const children = (logged, showMenu, toggleDrawer) => {
+  if (!logged && showMenu === 'LOGIN') {
     return <Login />
+  } else if (showMenu === 'NEWURL') {
+    return <NewUrl />
+  } else if (showMenu === 'OPTIONS') {
+    return <Options handleCloseMenu={toggleDrawer('left', false)} />
   }
 }

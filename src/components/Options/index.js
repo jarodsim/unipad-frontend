@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ArrowBack } from '@mui/icons-material'
 import {
   Typography,
@@ -10,17 +10,49 @@ import {
 
 import { Container, IconButton, BoxContainer, DevParagraph } from './styles'
 import HeaderMenu from '../HeaderMenu'
-import useGetUrl from '../hooks/useGetUrl'
 import MyButton from '../Button'
 import { languages } from '../../constants/languages'
 
 import { PadContext } from '../../context/padContext'
+import { MenuContext } from '../../context/menuContext'
+import api from '../../service/api'
+import useHandleLocalToken from '../hooks/useHandleLocalToken'
 
 export default function Options({ handleCloseMenu }) {
-  const { format: formatContext } = useContext(PadContext)
-  const [format, setFormat] = useState(formatContext)
+  const [format, setFormat] = useState('javascript')
 
-  const url = useGetUrl()
+  const url = window.location.pathname.replace('/', '')
+  const token = useHandleLocalToken()
+
+  const { format: formatContext, setFormat: setFormatContext } =
+    useContext(PadContext)
+  const { setShowMenu } = useContext(MenuContext)
+
+  useEffect(() => {
+    setFormat(formatContext)
+  }, [formatContext])
+
+  async function updateFormat() {
+    const { data } = await api.put(
+      '',
+      {
+        url,
+        pad: '',
+        format,
+        onlyformat: true,
+      },
+      {
+        headers: {
+          authorization: String(token),
+        },
+      }
+    )
+
+    if (data.success) {
+      alert('formato atualizado')
+    }
+  }
+
   return (
     <Container>
       <HeaderMenu
@@ -45,7 +77,7 @@ export default function Options({ handleCloseMenu }) {
           fontWeight='700'
           color='white'
         >
-          {window.location.pathname.replace('/', '')}
+          {url}
         </Typography>
         <FormControl
           variant='outlined'
@@ -64,7 +96,7 @@ export default function Options({ handleCloseMenu }) {
             label='Formato'
             value={format}
             onChange={(e) => {
-              setFormat(e.target.value)
+              setFormatContext(e.target.value)
             }}
             color='secondary'
             sx={{
@@ -85,14 +117,14 @@ export default function Options({ handleCloseMenu }) {
             label='SALVAR'
             color='secondary'
             callback={() => {
-              console.log(`salvar`)
+              updateFormat()
             }}
           />
           <MyButton
             label='NOVA URL'
             color='secondary'
             callback={() => {
-              console.log(`nova url`)
+              setShowMenu('NEWURL')
             }}
           />
         </FormControl>

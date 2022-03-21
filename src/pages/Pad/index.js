@@ -30,17 +30,17 @@ import { AuthContext } from '../../context/authContext'
 
 export default function Pad() {
   const [pad, setPad] = useState('')
-  const [format] = useState('javascript')
+  const [format, setFormat] = useState('javascript')
 
-  const { setFormat: setFormatInContext } = useContext(PadContext)
+  const { setFormat: setFormatInContext, format: formatContext } =
+    useContext(PadContext)
   const { logged, setLogged } = useContext(AuthContext)
-
-  const pathname = window.location.pathname.replace('/', '')
+  const { setShowMenu } = useContext(MenuContext)
 
   const debaunced = useDebounce(updatePad, 1000)
   const token = useHandleLocalToken()
 
-  const { setShowNewUrlMenu } = useContext(MenuContext)
+  const pathname = window.location.pathname.replace('/', '')
 
   useEffect(() => {
     if (token) {
@@ -50,6 +50,10 @@ export default function Pad() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, token])
+
+  useEffect(() => {
+    setFormat(formatContext)
+  }, [formatContext])
 
   async function handleGetUnipad() {
     try {
@@ -70,16 +74,15 @@ export default function Pad() {
         setPad(response_pad)
         setFormatInContext(format)
         setLogged(true)
-        setShowNewUrlMenu(false)
+        setShowMenu('OPTIONS')
       }
     } catch (error) {
       if (error?.response?.status === 404) {
-        setShowNewUrlMenu(true)
+        setShowMenu('NEWURL')
       }
       if (error?.response?.status === 403) {
-        if (logged) {
-          setLogged(false)
-        }
+        setShowMenu('LOGIN')
+        setLogged(false)
       }
       if (error?.response?.status === 401) {
         await handleAuth()
