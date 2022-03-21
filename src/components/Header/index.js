@@ -16,6 +16,7 @@ import useGetUrl from '../hooks/useGetUrl'
 import copyToClipBoard from '../../util/copyToClipBoard'
 import { MenuContext } from '../../context/menuContext'
 import { AuthContext } from '../../context/authContext'
+import { SnackbarContext } from '../../context/snackbarContext'
 
 export default function Header(props) {
   const [openDrawer] = useState(false)
@@ -25,8 +26,10 @@ export default function Header(props) {
 
   const { showMenu } = useContext(MenuContext)
   const { logged } = useContext(AuthContext)
+  const { setSnackObject } = useContext(SnackbarContext)
 
   const windowsWidth = useWindowsWidth()
+  const actualUrl = useGetUrl()
 
   const [state, setState] = useState({
     top: false,
@@ -34,8 +37,6 @@ export default function Header(props) {
     bottom: false,
     right: false,
   })
-
-  const actualUrl = useGetUrl()
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -100,6 +101,11 @@ export default function Header(props) {
               color='inherit'
               onClick={() => {
                 copyToClipBoard('vixe')
+                setSnackObject({
+                  open: true,
+                  message: 'Copiado para sua área de transferência!',
+                  type: 'success',
+                })
               }}
             >
               <CopyAll />
@@ -112,6 +118,11 @@ export default function Header(props) {
               color='inherit'
               onClick={() => {
                 copyToClipBoard(actualUrl)
+                setSnackObject({
+                  open: true,
+                  message: 'Copiado para sua área de transferência!',
+                  type: 'success',
+                })
               }}
             >
               <Share />

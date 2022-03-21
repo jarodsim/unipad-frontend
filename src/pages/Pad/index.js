@@ -47,6 +47,8 @@ export default function Pad() {
       ;(async () => {
         await handleGetUnipad()
       })()
+    } else {
+      window.location.href = ''
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, token])

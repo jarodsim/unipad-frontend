@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { LockOutlined } from '@mui/icons-material'
 import {
   Typography,
@@ -17,6 +17,7 @@ import { languages } from '../../constants/languages'
 
 import { useGetFormatedDate } from '../hooks/useGetFormatedDate'
 import api from '../../service/api'
+import { SnackbarContext } from '../../context/snackbarContext'
 
 export default function NewUrl() {
   const [format, setFormat] = useState('sql')
@@ -25,24 +26,44 @@ export default function NewUrl() {
   const [expiration, setExpiration] = useState(null)
   const formatedDate = useGetFormatedDate()
 
-  async function handleGoButton() {
-    const post_object = {
-      url,
-      password: password,
-      secure: password.length > 0 ? true : false,
-      format,
-      expiration,
-    }
-    const { data } = await api.post('', { ...post_object })
-    const { data: auth } = await api.post('auth', {
-      url: post_object.url,
-      password: password,
-    })
-    if (data.success && auth.success) {
-      const { token } = auth
-      localStorage.setItem('token', `Bearer ${token}`)
+  const { setSnackObject } = useContext(SnackbarContext)
 
-      window.location.pathname = `${url}`
+  async function handleGoButton() {
+    try {
+      const post_object = {
+        url,
+        password: password,
+        secure: password.length > 0 ? true : false,
+        format,
+        expiration,
+      }
+      const { data } = await api.post('', { ...post_object })
+      const { data: auth } = await api.post('auth', {
+        url: post_object.url,
+        password: password,
+      })
+      if (data.success && auth.success) {
+        const { token } = auth
+        localStorage.setItem('token', `Bearer ${token}`)
+
+        window.location.pathname = `${url}`
+      }
+    } catch (error) {
+      if (error?.response?.status === 403) {
+        setSnackObject({
+          open: true,
+          message:
+            'A url já existe e é protegida. Provavelmente a senha está incorreta.',
+          type: 'error',
+        })
+      } else {
+        setSnackObject({
+          open: true,
+          message:
+            'Ops! Sinto muito, mas aconteceu algo de errado. Tente novamente.',
+          type: 'error',
+        })
+      }
     }
   }
 

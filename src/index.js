@@ -11,21 +11,24 @@ import Header from './components/Header'
 import { PadProvider } from './context/padContext'
 import { MenuProvider } from './context/menuContext'
 import { AuthProvider } from './context/authContext'
+import { SnackbarProvider } from './context/snackbarContext'
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <AuthProvider>
-          <MenuProvider>
-            <PadProvider>
-              <Header>
-                <Routes />
-              </Header>
-            </PadProvider>
-          </MenuProvider>
-        </AuthProvider>
+        <SnackbarProvider>
+          <AuthProvider>
+            <MenuProvider>
+              <PadProvider>
+                <Header>
+                  <Routes />
+                </Header>
+              </PadProvider>
+            </MenuProvider>
+          </AuthProvider>
+        </SnackbarProvider>
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,
