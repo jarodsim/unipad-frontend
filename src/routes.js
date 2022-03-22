@@ -6,7 +6,7 @@ import Pad from './pages/Pad'
 function Routers() {
   return (
     <Routes>
-      <Route path='/' element={<Main />}/>
+      <Route path='/' element={<Main />} />
       <Route path='/*' element={<Pad />} />
     </Routes>
   )

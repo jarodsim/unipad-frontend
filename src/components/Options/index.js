@@ -11,10 +11,13 @@ import {
 import { Container, IconButton, BoxContainer, DevParagraph } from './styles'
 import HeaderMenu from '../HeaderMenu'
 import MyButton from '../Button'
+
 import { languages } from '../../constants/languages'
 
 import { PadContext } from '../../context/padContext'
 import { MenuContext } from '../../context/menuContext'
+import { SnackbarContext } from '../../context/snackbarContext'
+
 import api from '../../service/api'
 import useHandleLocalToken from '../hooks/useHandleLocalToken'
 
@@ -27,6 +30,7 @@ export default function Options({ handleCloseMenu }) {
   const { format: formatContext, setFormat: setFormatContext } =
     useContext(PadContext)
   const { setShowMenu } = useContext(MenuContext)
+  const { setSnackObject } = useContext(SnackbarContext)
 
   useEffect(() => {
     setFormat(formatContext)
@@ -49,7 +53,11 @@ export default function Options({ handleCloseMenu }) {
     )
 
     if (data.success) {
-      alert('formato atualizado')
+      setSnackObject({
+        open: true,
+        message: 'Formato atualizado com sucesso!',
+        type: 'success',
+      })
     }
   }
 
