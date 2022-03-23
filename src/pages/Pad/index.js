@@ -122,14 +122,6 @@ export default function Pad() {
       }
     }
   }
-
-  useMemo(async () => {
-    if (logged) {
-      debaunced()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pad])
-
   async function updatePad() {
     await api.put(
       '',
@@ -146,8 +138,15 @@ export default function Pad() {
     )
   }
 
+  useMemo(async () => {
+    if (logged) {
+      debaunced()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pad])
+
   if (!logged) {
-    return <div>não logado</div>
+    return <div>Não autenticado</div>
   }
 
   return (

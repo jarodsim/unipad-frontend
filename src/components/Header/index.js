@@ -33,7 +33,7 @@ export default function Header(props) {
 
   const [state, setState] = useState({
     top: false,
-    left: true,
+    left: window.location.pathname === '/' ? true : false,
     bottom: false,
     right: false,
   })
@@ -100,7 +100,10 @@ export default function Header(props) {
               aria-haspopup='true'
               color='inherit'
               onClick={() => {
-                copyToClipBoard('vixe')
+                const pad = document.getElementsByClassName(
+                  'npm__react-simple-code-editor__textarea'
+                )[0].value
+                copyToClipBoard(pad)
                 setSnackObject({
                   open: true,
                   message: 'Copiado para sua área de transferência!',
@@ -133,7 +136,10 @@ export default function Header(props) {
       <Drawer
         anchor='left'
         open={state['left']}
-        onClose={toggleDrawer('left', false)}
+        onClose={toggleDrawer(
+          'left',
+          window.location.pathname === '/' ? true : false
+        )}
         elevation={1}
       >
         <Box

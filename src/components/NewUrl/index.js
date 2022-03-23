@@ -205,7 +205,15 @@ export default function NewUrl() {
             label='IR'
             color='secondary'
             callback={() => {
-              handleGoButton()
+              if (url.length > 0) {
+                handleGoButton()
+              } else {
+                setSnackObject({
+                  open: true,
+                  message: 'Ops! Digite uma url.',
+                  type: 'warning',
+                })
+              }
             }}
           />
         </FormControl>
