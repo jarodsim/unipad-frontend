@@ -18,6 +18,7 @@ import { languages } from '../../constants/languages'
 import { useGetFormatedDate } from '../hooks/useGetFormatedDate'
 import api from '../../service/api'
 import { SnackbarContext } from '../../context/snackbarContext'
+import useLoading from '../hooks/useLoading'
 
 export default function NewUrl() {
   const [format, setFormat] = useState('sql')
@@ -26,10 +27,12 @@ export default function NewUrl() {
   const [expiration, setExpiration] = useState(null)
 
   const formatedDate = useGetFormatedDate()
+  const { setLoading } = useLoading()
 
   const { setSnackObject } = useContext(SnackbarContext)
 
   async function handleGoButton() {
+    setLoading(true)
     try {
       const post_object = {
         url,
@@ -50,6 +53,8 @@ export default function NewUrl() {
         window.location.pathname = `${url}`
       }
     } catch (error) {
+      setLoading(false)
+
       if (error?.response?.status === 403) {
         setSnackObject({
           open: true,

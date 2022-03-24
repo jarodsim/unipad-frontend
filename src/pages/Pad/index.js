@@ -27,10 +27,12 @@ import 'prismjs/components/prism-python'
 import './prism.css'
 import { MenuContext } from '../../context/menuContext'
 import { AuthContext } from '../../context/authContext'
+import useLoading from '../../components/hooks/useLoading'
 
 export default function Pad() {
-  const [pad, setPad] = useState('')
+  const [pad, setPad] = useState(null)
   const [format, setFormat] = useState('javascript')
+  const { setLoading } = useLoading()
 
   const { setFormat: setFormatInContext, format: formatContext } =
     useContext(PadContext)
@@ -51,13 +53,14 @@ export default function Pad() {
       window.location.href = ''
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, token])
+  }, [])
 
   useEffect(() => {
     setFormat(formatContext)
   }, [formatContext])
 
   async function handleGetUnipad() {
+    setLoading(true)
     try {
       const { data } = await api.put(
         'get',
@@ -77,14 +80,17 @@ export default function Pad() {
         setFormatInContext(format)
         setLogged(true)
         setShowMenu('OPTIONS')
+        setLoading(false)
       }
     } catch (error) {
       if (error?.response?.status === 404) {
         setShowMenu('NEWURL')
+        setLoading(false)
       }
       if (error?.response?.status === 403) {
         setShowMenu('LOGIN')
         setLogged(false)
+        setLoading(false)
       }
       if (error?.response?.status === 401) {
         await handleAuth()

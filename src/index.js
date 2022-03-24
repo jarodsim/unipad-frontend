@@ -12,6 +12,7 @@ import { PadProvider } from './context/padContext'
 import { MenuProvider } from './context/menuContext'
 import { AuthProvider } from './context/authContext'
 import { SnackbarProvider } from './context/snackbarContext'
+import { LoadingProvider } from './context/loadingContext'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,9 +23,11 @@ ReactDOM.render(
           <AuthProvider>
             <MenuProvider>
               <PadProvider>
-                <Header>
-                  <Routes />
-                </Header>
+                <LoadingProvider>
+                  <Header>
+                    <Routes />
+                  </Header>
+                </LoadingProvider>
               </PadProvider>
             </MenuProvider>
           </AuthProvider>

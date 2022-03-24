@@ -11,12 +11,14 @@ import { Share, CopyAll } from '@mui/icons-material'
 import Options from '../Options'
 import NewUrl from '../NewUrl'
 import Login from '../Login'
+import Loading from '../Loading'
 import useWindowsWidth from '../hooks/useWindowWidth'
 import useGetUrl from '../hooks/useGetUrl'
 import copyToClipBoard from '../../util/copyToClipBoard'
 import { MenuContext } from '../../context/menuContext'
 import { AuthContext } from '../../context/authContext'
 import { SnackbarContext } from '../../context/snackbarContext'
+import useLoading from '../hooks/useLoading'
 
 export default function Header(props) {
   const [openDrawer] = useState(false)
@@ -30,6 +32,7 @@ export default function Header(props) {
 
   const windowsWidth = useWindowsWidth()
   const actualUrl = useGetUrl()
+  const { loading } = useLoading()
 
   const [state, setState] = useState({
     top: false,
@@ -64,6 +67,10 @@ export default function Header(props) {
   useEffect(() => {
     _setLogged(logged)
   }, [logged])
+
+  // if (loading) {
+  //   return <Loading />
+  // }
 
   return (
     <div>
