@@ -28,6 +28,7 @@ import './prism.css'
 import { MenuContext } from '../../context/menuContext'
 import { AuthContext } from '../../context/authContext'
 import useLoading from '../../components/hooks/useLoading'
+import { SnackbarContext } from '../../context/snackbarContext'
 
 export default function Pad() {
   const [pad, setPad] = useState(null)
@@ -38,6 +39,7 @@ export default function Pad() {
     useContext(PadContext)
   const { logged, setLogged } = useContext(AuthContext)
   const { setShowMenu } = useContext(MenuContext)
+  const { setSnackObject } = useContext(SnackbarContext)
 
   const debaunced = useDebounce(updatePad, 1000)
   const token = useHandleLocalToken()
@@ -50,7 +52,9 @@ export default function Pad() {
         await handleGetUnipad()
       })()
     } else {
-      window.location.href = ''
+      ;(async () => {
+        await handleAuth()
+      })()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -65,7 +69,7 @@ export default function Pad() {
       const { data } = await api.put(
         'get',
         {
-          url: pathname,
+          url: `/${pathname}`,
         },
         {
           headers: {
@@ -86,11 +90,22 @@ export default function Pad() {
       if (error?.response?.status === 404) {
         setShowMenu('NEWURL')
         setLoading(false)
+        setSnackObject({
+          open: true,
+          type: 'warning',
+          message:
+            'A url ainda não existe, abra o menu para cria-lá da forma que preferir.',
+        })
       }
       if (error?.response?.status === 403) {
         setShowMenu('LOGIN')
         setLogged(false)
         setLoading(false)
+        setSnackObject({
+          open: true,
+          type: 'warning',
+          message: 'A url é protegida, abra o menu para efetuar o login.',
+        })
       }
       if (error?.response?.status === 401) {
         await handleAuth()
@@ -103,7 +118,7 @@ export default function Pad() {
       const { data: auth } = await api.post(
         'auth',
         {
-          url: pathname,
+          url: `/${pathname}`,
           password: '123456',
         },
         {
