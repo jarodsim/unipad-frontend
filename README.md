@@ -1,5 +1,6 @@
 # Unipad
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2aa93098d41d43169897d59a2a9a7a0e)](https://app.codacy.com/gh/jarodsim/unipad-frontend?utm_source=github.com&utm_medium=referral&utm_content=jarodsim/unipad-frontend&utm_campaign=Badge_Grade_Settings)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/045aa4c2702946bcbdda18bad5fa01c6)](https://app.codacy.com/manual/jarodsim/unipad-frontend?utm_source=github.com&utm_medium=referral&utm_content=jarodsim/unipad-frontend&utm_campaign=Badge_Grade_Dashboard)
 
 ![picture](public/LOGO.png)
