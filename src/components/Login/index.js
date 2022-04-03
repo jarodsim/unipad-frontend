@@ -32,6 +32,7 @@ export default function NewUrl() {
       const { token } = auth
       localStorage.setItem('token', `Bearer ${token}`)
       setLogged(true)
+      window.location.reload()
     }
   }
 

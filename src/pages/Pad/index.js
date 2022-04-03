@@ -31,7 +31,7 @@ import useLoading from '../../components/hooks/useLoading'
 import { SnackbarContext } from '../../context/snackbarContext'
 
 export default function Pad() {
-  const [pad, setPad] = useState(null)
+  const [pad, setPad] = useState('')
   const [format, setFormat] = useState('javascript')
   const { setLoading } = useLoading()
 
@@ -149,7 +149,7 @@ export default function Pad() {
       {
         pad,
         format,
-        url: pathname,
+        url: `/${pathname}`,
       },
       {
         headers: {
@@ -167,7 +167,7 @@ export default function Pad() {
   }, [pad])
 
   if (!logged) {
-    return <div>Não autenticado</div>
+    return <></>
   }
 
   return (
@@ -175,7 +175,12 @@ export default function Pad() {
       <Textarea
         value={pad}
         onValueChange={(pad) => setPad(pad)}
-        highlight={(pad) => highlight(pad, languages[format])}
+        highlight={(pad) =>
+          highlight(
+            pad,
+            languages[format === 'text/markdown' ? 'markdown' : format]
+          )
+        }
         padding={10}
         style={{
           fontFamily: '"Fira code", "Fira Mono", monospace',
