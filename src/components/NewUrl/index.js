@@ -35,7 +35,7 @@ export default function NewUrl() {
     setLoading(true)
     try {
       const post_object = {
-        url,
+        url: `/${url}`,
         password: password,
         secure: password.length > 0 ? true : false,
         format,

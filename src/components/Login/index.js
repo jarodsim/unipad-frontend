@@ -24,7 +24,7 @@ export default function NewUrl() {
 
   async function handleLogin() {
     const { data: auth } = await api.post('auth', {
-      url: url.replace('/', ''),
+      url: url,
       password: password,
     })
 
