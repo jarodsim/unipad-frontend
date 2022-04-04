@@ -85,6 +85,9 @@ export default function Pad() {
         setLogged(true)
         setShowMenu('OPTIONS')
         setLoading(false)
+      } else {
+        window.localStorage.removeItem('token')
+        window.location.reload()
       }
     } catch (error) {
       if (error?.response?.status === 404) {
