@@ -24,7 +24,7 @@ import useHandleLocalToken from '../hooks/useHandleLocalToken'
 export default function Options({ handleCloseMenu }) {
   const [format, setFormat] = useState('javascript')
 
-  const url = window.location.pathname.replace('/', '')
+  const url = window.location.pathname
   const token = useHandleLocalToken()
 
   const { format: formatContext, setFormat: setFormatContext } =
