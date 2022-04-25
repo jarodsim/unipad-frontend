@@ -118,6 +118,7 @@ export default function Pad() {
 
   async function handleAuth() {
     try {
+      setLoading(true)
       const { data: auth } = await api.post(
         'auth',
         {
@@ -140,6 +141,14 @@ export default function Pad() {
       }
     } catch (error) {
       if (error?.response?.status === 403) {
+        setShowMenu('LOGIN')
+        setLogged(false)
+        setLoading(false)
+        setSnackObject({
+          open: true,
+          type: 'warning',
+          message: 'A url é protegida, abra o menu para efetuar o login.',
+        })
         if (logged) {
           setLogged(false)
         }
