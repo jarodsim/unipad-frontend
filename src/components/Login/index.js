@@ -14,25 +14,43 @@ import MyButton from '../Button'
 import api from '../../service/api'
 
 import { AuthContext } from '../../context/authContext'
+import { SnackbarContext } from '../../context/snackbarContext'
 
 export default function NewUrl() {
   const [password, setPassword] = useState('')
 
   const { setLogged } = useContext(AuthContext)
+  const { setSnackObject } = useContext(SnackbarContext)
 
   const url = window.location.pathname
 
   async function handleLogin() {
-    const { data: auth } = await api.post('auth', {
-      url: url,
-      password: password,
-    })
+    try {
+      const { data: auth } = await api.post('auth', {
+        url: url,
+        password: password,
+      })
 
-    if (auth.success) {
-      const { token } = auth
-      localStorage.setItem('token', `Bearer ${token}`)
-      setLogged(true)
-      window.location.reload()
+      if (auth.success) {
+        const { token } = auth
+        localStorage.setItem('token', `Bearer ${token}`)
+        setLogged(true)
+        window.location.reload()
+      } else {
+        setSnackObject({
+          open: true,
+          type: 'error',
+          message: 'Ops! Algo de errado aconteceu',
+        })
+      }
+    } catch (error) {
+      if (error?.response?.status === 403) {
+        setSnackObject({
+          open: true,
+          type: 'error',
+          message: 'Senha incorreta!',
+        })
+      }
     }
   }
 
