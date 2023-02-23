@@ -54,7 +54,7 @@ export default function NewUrl() {
       }
     } catch (error) {
       setLoading(false)
-
+      console.error(error)
       if (error?.response?.status === 403) {
         setSnackObject({
           open: true,
