@@ -120,6 +120,19 @@ export default function NewUrl() {
             onChange={(e) => {
               setUrl(e.target.value)
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                if (url.length > 0) {
+                  handleGoButton()
+                } else {
+                  setSnackObject({
+                    open: true,
+                    message: 'Ops! Digite uma url.',
+                    type: 'warning',
+                  })
+                }
+              }
+            }}
           />
         </FormControl>
 
@@ -224,7 +237,7 @@ export default function NewUrl() {
         </FormControl>
         <DevParagraph>
           Desenvolvido por{' '}
-          <a href='https://jarodmateus.com' target='_blank' rel='noreferrer'>
+          <a href='https://jarod.dev' target='_blank' rel='noreferrer'>
             Jarod Cavalcante
           </a>
         </DevParagraph>

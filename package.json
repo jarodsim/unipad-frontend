@@ -19,7 +19,7 @@
     "react-scripts": "^5.0.1",
     "react-simple-code-editor": "^0.13.1",
     "socket.io-client": "^4.6.1",
-    "styled-components": "^5.3.6",
+    "styled-components": "^6.0.7",
     "web-vitals": "^3.0.4"
   },
   "scripts": {

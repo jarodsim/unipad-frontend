@@ -67,6 +67,7 @@ export default function Pad() {
 
   useEffect(() => {
     setFormat(formatContext)
+    console.log('formatContext', formatContext)
   }, [formatContext])
 
   async function handleGetUnipad() {
@@ -226,7 +227,7 @@ export default function Pad() {
         highlight={(pad) =>
           highlight(
             pad,
-            languages[format === 'text/markdown' ? 'markdown' : format]
+            languages[format === 'text/markdown' ? 'markdown' : format === 'html/markup' ? 'markup' : format]
           )
         }
         padding={10}
