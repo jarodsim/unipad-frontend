@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://unipadbackend.jarod.dev/',
+  baseURL: 'https://unipad.jcmcode.com.br/',
 })
 
 export default api
