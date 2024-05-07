@@ -14,17 +14,6 @@ import { AuthProvider } from './context/authContext';
 import { SnackbarProvider } from './context/snackbarContext';
 import { LoadingProvider } from './context/loadingContext';
 
-import ReactGA from 'react-ga4';
-
-const TRACKING_ID = 'G-Z33D84EBN9';
-
-ReactGA.initialize(TRACKING_ID);
-ReactGA.send({
-  hitType: 'pageview',
-  page: window.location.pathname,
-  title: document.title,
-});
-
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

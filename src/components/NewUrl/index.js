@@ -20,6 +20,8 @@ import api from '../../service/api'
 import { SnackbarContext } from '../../context/snackbarContext'
 import useLoading from '../hooks/useLoading'
 
+import ReactGA from 'react-ga4';
+
 export default function NewUrl() {
   const [format, setFormat] = useState('sql')
   const [url, setUrl] = useState('')
@@ -49,6 +51,12 @@ export default function NewUrl() {
       if (data.success && auth.success) {
         const { token } = auth
         localStorage.setItem('token', `Bearer ${token}`)
+
+        ReactGA.event({
+          category: 'New URL',
+          action: 'Click',
+          label: `New URL: ${url}`,
+      });
 
         window.location.pathname = `${url}`
       }
