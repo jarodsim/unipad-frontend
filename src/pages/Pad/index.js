@@ -33,7 +33,9 @@ import { SnackbarContext } from '../../context/snackbarContext'
 import io from 'socket.io-client';
 
 const socketClient = api.getUri()
-const socket = io(socketClient);
+const socket = io(socketClient, {
+  transports: ['websocket'],
+});
 
 export default function Pad() {
   const [pad, setPad] = useState('')
