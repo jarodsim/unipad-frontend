@@ -89,7 +89,7 @@ export default function NewUrl() {
 
   return (
     <Container>
-      <HeaderMenu title='NOVA URL' />
+      <HeaderMenu title='Unipad' />
       <BoxContainer
         sx={{
           display: 'flex',
@@ -246,7 +246,7 @@ export default function NewUrl() {
         <DevParagraph>
           Desenvolvido por{' '}
           <a href='https://jarod.dev' target='_blank' rel='noreferrer'>
-            Jarod Cavalcante
+            Jarod Mateus
           </a>
         </DevParagraph>
       </BoxContainer>

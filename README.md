@@ -57,4 +57,4 @@ O banco de dados utilizado é o MongoDb. Utilizo a versão free (512mb) do Mongo
 - Em seguida inicie o backend com o comando `yarn dev`
 - No frontend rode o comando `yarn start` para iniciar a aplicação que estará rodando em `Localhost:3000`
 
-© Jarod Cavalcante - 2023
+© Jarod Mateus - 2023

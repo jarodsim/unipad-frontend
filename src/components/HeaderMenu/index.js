@@ -1,12 +1,14 @@
 import { Container } from './styles'
 
 import { Typography } from '@mui/material'
-// import { ArrowBack } from '@mui/icons-material'
 
 export default function HeaderMenu({ title, actionButton }) {
   return (
     <Container>
-      <Typography variant='h6' color='white' fontWeight={600}>
+      <Typography variant='h1' color='white' style={{
+        fontSize: title === 'CONFIGURAÇÕES DA URL' ? '1.5rem' : '2rem',
+        textAlign: 'center',
+      }}>
         {title}
       </Typography>
       {actionButton}
