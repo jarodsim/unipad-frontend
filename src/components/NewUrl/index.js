@@ -20,6 +20,8 @@ import api from '../../service/api'
 import { SnackbarContext } from '../../context/snackbarContext'
 import useLoading from '../hooks/useLoading'
 
+import ReactGA from 'react-ga4';
+
 export default function NewUrl() {
   const [format, setFormat] = useState('sql')
   const [url, setUrl] = useState('')
@@ -50,11 +52,17 @@ export default function NewUrl() {
         const { token } = auth
         localStorage.setItem('token', `Bearer ${token}`)
 
+        ReactGA.event({
+          category: 'New URL',
+          action: 'Click',
+          label: `New URL: ${url}`,
+      });
+
         window.location.pathname = `${url}`
       }
     } catch (error) {
       setLoading(false)
-
+      console.error(error)
       if (error?.response?.status === 403) {
         setSnackObject({
           open: true,
@@ -81,7 +89,7 @@ export default function NewUrl() {
 
   return (
     <Container>
-      <HeaderMenu title='NOVA URL' />
+      <HeaderMenu title='Unipad' />
       <BoxContainer
         sx={{
           display: 'flex',
@@ -119,6 +127,19 @@ export default function NewUrl() {
             value={url}
             onChange={(e) => {
               setUrl(e.target.value)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                if (url.length > 0) {
+                  handleGoButton()
+                } else {
+                  setSnackObject({
+                    open: true,
+                    message: 'Ops! Digite uma url.',
+                    type: 'warning',
+                  })
+                }
+              }
             }}
           />
         </FormControl>
@@ -224,8 +245,8 @@ export default function NewUrl() {
         </FormControl>
         <DevParagraph>
           Desenvolvido por{' '}
-          <a href='https://jarodmateus.com' target='_blank' rel='noreferrer'>
-            Jarod Cavalcante
+          <a href='https://jarod.dev' target='_blank' rel='noreferrer'>
+            Jarod Mateus
           </a>
         </DevParagraph>
       </BoxContainer>

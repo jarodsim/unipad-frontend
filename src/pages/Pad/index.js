@@ -30,10 +30,18 @@ import { AuthContext } from '../../context/authContext'
 import useLoading from '../../components/hooks/useLoading'
 import { SnackbarContext } from '../../context/snackbarContext'
 
+import io from 'socket.io-client';
+
+const socketClient = api.getUri()
+const socket = io(socketClient, {
+  transports: ['websocket'],
+});
+
 export default function Pad() {
   const [pad, setPad] = useState('')
   const [format, setFormat] = useState('javascript')
   const { setLoading } = useLoading()
+  const [isConnected, setIsConnected] = useState(socket.connected);
 
   const { setFormat: setFormatInContext, format: formatContext } =
     useContext(PadContext)
@@ -48,11 +56,11 @@ export default function Pad() {
 
   useEffect(() => {
     if (token) {
-      ;(async () => {
+      ; (async () => {
         await handleGetUnipad()
       })()
     } else {
-      ;(async () => {
+      ; (async () => {
         await handleAuth()
       })()
     }
@@ -61,6 +69,7 @@ export default function Pad() {
 
   useEffect(() => {
     setFormat(formatContext)
+    console.log('formatContext', formatContext)
   }, [formatContext])
 
   async function handleGetUnipad() {
@@ -178,7 +187,34 @@ export default function Pad() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pad])
 
-  if (!logged) {
+  useEffect(() => {
+    // socket.emit('create', `/${pathname}`)
+  }, [])
+
+  useEffect(() => {
+    socket.on("connection", () => {
+      socket.emit('create', `/${pathname}`)
+      setIsConnected(true);
+    });
+
+    socket.on('disconnect', () => {
+      setIsConnected(false);
+    });
+
+    return () => {
+      socket.off('connection');
+      socket.off('disconnect');
+      socket.off(`/${pathname}`);
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on(`/${pathname}`, (data) => {
+      setPad(data.data.pad)
+    })
+  }, [])
+
+  if (!logged && !isConnected) {
     return <></>
   }
 
@@ -186,11 +222,14 @@ export default function Pad() {
     <div>
       <Textarea
         value={pad}
-        onValueChange={(pad) => setPad(pad)}
+        onValueChange={(pad) => {
+          socket.emit('editpad', { pad })
+          setPad(pad)
+        }}
         highlight={(pad) =>
           highlight(
             pad,
-            languages[format === 'text/markdown' ? 'markdown' : format]
+            languages[format === 'text/markdown' ? 'markdown' : format === 'html/markup' ? 'markup' : format]
           )
         }
         padding={10}
