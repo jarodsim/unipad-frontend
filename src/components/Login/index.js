@@ -114,8 +114,8 @@ export default function NewUrl() {
         </FormControl>
         <DevParagraph>
           Desenvolvido por{' '}
-          <a href='https://jarodmateus.tech' target='_blank' rel='noreferrer'>
-            Jarod Cavalcante
+          <a href='https://jarod.dev/' target='_blank' rel='noreferrer'>
+            Jarod Mateus
           </a>
         </DevParagraph>
       </BoxContainer>

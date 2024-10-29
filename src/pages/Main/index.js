@@ -1,3 +1,3 @@
 export default function Main() {
-  return <div>Crie uma URL</div>
+  return <h1>Crie uma URL</h1>
 }

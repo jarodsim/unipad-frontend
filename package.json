@@ -15,10 +15,12 @@
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-ga4": "^2.1.0",
     "react-router-dom": "^6.4.3",
     "react-scripts": "^5.0.1",
     "react-simple-code-editor": "^0.13.1",
-    "styled-components": "^5.3.6",
+    "socket.io-client": "^4.6.1",
+    "styled-components": "^6.0.7",
     "web-vitals": "^3.0.4"
   },
   "scripts": {
@@ -48,5 +50,6 @@
   "devDependencies": {
     "react-test-renderer": "^18.2.0",
     "yarn-upgrade-all": "^0.7.1"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

@@ -14,6 +14,7 @@ O [unipad](https://unipad.herokuapp.com/) é um serviço para compartilhamento d
 | Pode definir uma data para expiração da URL           | Não     | Sim      |
 | Formata o conteúdo de acordo com o formato do arquivo | Não     | Sim      |
 | Playground para a linguagem Javascript                | Não     | Em breve |
+| Digitação com amigos em tempo real                    | Não     | Sim      |
 
 ---
 
@@ -25,6 +26,7 @@ O [unipad](https://unipad.herokuapp.com/) é um serviço para compartilhamento d
 - _Mongoose_ para conexão com o MongoDB
 - _Nodemon_ para atualizar em tempo real
 - _Crypto_ para hash e salta de senhas
+- _Socket IO_ Para digitação em tempo real com amigos
 
 #### Frontend
 
@@ -34,10 +36,12 @@ O [unipad](https://unipad.herokuapp.com/) é um serviço para compartilhamento d
 - _styled-componnets_ para adicinar estilo aos componentes
 - _react-copy-to-clipboard_ para função de copiar o código digitado e compartilhar a url
 - _material-ui_ para estilização e uso de componetes como inputs, inputs de data e menu
+- _Socket IO Client_ Para digitação em tempo real com amigos
 
 #### Hospedagem
 
-Ambos frontend e backend estão hospedados no [Heroku](https://heroku.com/)
+Frontend hospedado na [Versel](https://vercel.com/)
+Backend hospedado na [Render](https://render.com/)
 
 #### Banco de Dados
 
@@ -53,4 +57,4 @@ O banco de dados utilizado é o MongoDb. Utilizo a versão free (512mb) do Mongo
 - Em seguida inicie o backend com o comando `yarn dev`
 - No frontend rode o comando `yarn start` para iniciar a aplicação que estará rodando em `Localhost:3000`
 
-© Jarod Cavalcante - 2022
+© Jarod Mateus - 2023

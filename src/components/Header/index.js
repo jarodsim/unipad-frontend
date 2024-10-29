@@ -5,20 +5,18 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
-import { Drawer, Box } from '@mui/material'
+import { Drawer, Box, Link } from '@mui/material'
 import { Share, CopyAll } from '@mui/icons-material'
 
 import Options from '../Options'
 import NewUrl from '../NewUrl'
 import Login from '../Login'
-import Loading from '../Loading'
 import useWindowsWidth from '../hooks/useWindowWidth'
 import useGetUrl from '../hooks/useGetUrl'
 import copyToClipBoard from '../../util/copyToClipBoard'
 import { MenuContext } from '../../context/menuContext'
 import { AuthContext } from '../../context/authContext'
 import { SnackbarContext } from '../../context/snackbarContext'
-import useLoading from '../hooks/useLoading'
 
 export default function Header(props) {
   const [openDrawer] = useState(false)
@@ -32,7 +30,6 @@ export default function Header(props) {
 
   const windowsWidth = useWindowsWidth()
   const actualUrl = useGetUrl()
-  const { loading } = useLoading()
 
   const [state, setState] = useState({
     top: false,
@@ -68,9 +65,7 @@ export default function Header(props) {
     _setLogged(logged)
   }, [logged])
 
-  // if (loading) {
-  //   return <Loading />
-  // }
+
 
   return (
     <div>
@@ -86,18 +81,18 @@ export default function Header(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant='h4'
+          <Link
+            variant='h1'
             component='div'
             sx={{ flexGrow: 1 }}
             textAlign='center'
-            style={{ fontWeight: 800 }}
+            style={{ fontWeight: 800, fontSize: '1.5rem', color: 'white', cursor: 'pointer', textDecoration: 'none' }}
             onClick={() => {
               window.location.href = '/'
             }}
           >
-            UNIPAD
-          </Typography>
+            UNIPAD - Codifique e compartilhe
+          </Link>
 
           <div>
             <IconButton
