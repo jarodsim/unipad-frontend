@@ -206,12 +206,14 @@ export default function Pad() {
       socket.off('disconnect');
       socket.off(`/${pathname}`);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   useEffect(() => {
     socket.on(`/${pathname}`, (data) => {
       setPad(data.data.pad)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (!logged && !isConnected) {
