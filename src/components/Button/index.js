@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { MyButton } from './styles'
 
 export default function Button({ label, color, callback }) {
