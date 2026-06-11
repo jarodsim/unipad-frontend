@@ -2,13 +2,12 @@
 
 import { useContext, useEffect, useMemo, useState, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import Editor from 'react-simple-code-editor'
 
 import useHandleLocalToken from '@/components/hooks/useHandleLocalToken'
 import api from '@/service/api'
 
 import { PadContext } from '@/context/padContext'
-
-import { Textarea } from './styles'
 
 import useDebounce from '@/components/hooks/useDebounce'
 
@@ -101,7 +100,6 @@ export default function PadPage() {
 
   useEffect(() => {
     setFormat(formatContext)
-    console.log('formatContext', formatContext)
   }, [formatContext])
 
   async function handleGetUnipad() {
@@ -225,8 +223,9 @@ export default function PadPage() {
   }
 
   return (
-    <div>
-      <Textarea
+    <div className="w-full h-[calc(100vh-64px)] overflow-y-auto">
+      <Editor
+        className="w-full min-h-[90vh] rounded-sm bg-white text-black resize-none border-none outline-none"
         value={pad}
         onValueChange={(newPad) => {
           socketRef.current?.emit('editpad', { pad: newPad })

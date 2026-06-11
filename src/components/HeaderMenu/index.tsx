@@ -1,23 +1,25 @@
 import React, { ReactNode } from 'react'
-import { Container } from './styles'
-
-import { Typography } from '@mui/material'
 
 interface HeaderMenuProps {
-  title: string;
-  actionButton?: ReactNode;
+  title: string
+  actionButton?: ReactNode
 }
 
 export default function HeaderMenu({ title, actionButton }: HeaderMenuProps) {
+  const isBrand = title === 'Unipad'
+
   return (
-    <Container>
-      <Typography variant='h1' color='white' style={{
-        fontSize: title === 'CONFIGURAÇÕES DA URL' ? '1.5rem' : '2rem',
-        textAlign: 'center',
-      }}>
+    <div className={`flex h-20 w-full items-center px-5 ${actionButton ? 'justify-between' : 'justify-center'}`}>
+      <h1
+        className={`min-w-0 text-center text-white ${
+          isBrand
+            ? 'text-3xl font-medium tracking-tight'
+            : 'truncate text-lg font-extrabold uppercase tracking-wide'
+        }`}
+      >
         {title}
-      </Typography>
-      {actionButton}
-    </Container>
+      </h1>
+      {actionButton ? <div className="ml-3 shrink-0">{actionButton}</div> : null}
+    </div>
   )
 }

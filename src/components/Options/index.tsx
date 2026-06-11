@@ -2,18 +2,13 @@
 
 import { useContext, useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { ArrowBack } from '@mui/icons-material'
-import {
-  Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from '@mui/material'
+import { ArrowLeftIcon } from '@heroicons/react/24/outline'
+import { Button, Label, ListBox, Select } from '@heroui/react'
+import type { Key } from '@heroui/react'
 
-import { Container, IconButton, BoxContainer, DevParagraph } from './styles'
 import HeaderMenu from '@/components/HeaderMenu'
 import MyButton from '@/components/Button'
+import { menuPanelStyles } from '@/components/menuPanelStyles'
 
 import { languages } from '@/constants/languages'
 
@@ -65,87 +60,88 @@ export default function Options({ handleCloseMenu }: { handleCloseMenu: () => vo
   }
 
   return (
-    <Container>
+    <div className="min-h-full w-full px-5 pb-8 text-white">
       <HeaderMenu
         title="CONFIGURAÇÕES DA URL"
         actionButton={
-          <IconButton onClick={handleCloseMenu}>
-            <ArrowBack />
-          </IconButton>
+          <Button
+            isIconOnly
+            variant="ghost"
+            className="text-white hover:bg-white/10"
+            aria-label="Voltar"
+            onPress={handleCloseMenu}
+          >
+            <ArrowLeftIcon className="w-6 h-6" />
+          </Button>
         }
       />
-      <BoxContainer
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Typography
-          variant="h5"
-          textAlign="center"
-          fontWeight="700"
-          color="white"
-        >
+      <div className="mx-auto flex w-full max-w-[360px] flex-col items-center pt-3">
+        <h5 className="mb-6 max-w-full truncate text-center text-xl font-extrabold text-white drop-shadow-sm">
           {url}
-        </Typography>
-        <FormControl
-          variant="outlined"
-          sx={{ m: 1, minWidth: '90%', minHeight: '100%' }}
-          color="secondary"
-        >
-          <InputLabel id="format">
-            <Typography variant="body1" color="#e3f2fd">
-              Formato
-            </Typography>
-          </InputLabel>
-          <Select
-            labelId="format"
-            id="select-format"
-            variant="outlined"
-            label="Formato"
-            value={format}
-            onChange={(e) => {
-              setFormatContext(e.target.value)
-            }}
-            color="secondary"
-            sx={{
-              textAlign: 'center',
-            }}
-          >
-            {languages.map((language, index) => (
-              <MenuItem
-                key={index}
-                value={language === 'GO' ? language.toLowerCase() : language}
-                color="#e3f2fd"
-              >
-                <Typography variant="body1">{language}</Typography>
-              </MenuItem>
-            ))}
-          </Select>
+        </h5>
+        
+        <div className="flex w-full flex-col gap-4">
+          <div className="w-full">
+            <Select
+              className={menuPanelStyles.field}
+              placeholder="Selecione o formato"
+              selectedKey={format}
+              onSelectionChange={(key: Key | null) => {
+                if (key) {
+                  setFormat(String(key))
+                  setFormatContext(String(key))
+                }
+              }}
+            >
+              <Label className={menuPanelStyles.label}>Formato</Label>
+              <Select.Trigger className={menuPanelStyles.selectTrigger}>
+                <Select.Value className={menuPanelStyles.selectValue} />
+                <Select.Indicator className="text-white/70" />
+              </Select.Trigger>
+              <Select.Popover className="border border-red-100/80 bg-white shadow-xl">
+                <ListBox>
+                  {languages.map((language) => {
+                    const val = language === 'GO' ? language.toLowerCase() : language;
+                    return (
+                      <ListBox.Item key={val} id={val} textValue={language}>
+                        {language}
+                        <ListBox.ItemIndicator />
+                      </ListBox.Item>
+                    )
+                  })}
+                </ListBox>
+              </Select.Popover>
+            </Select>
+          </div>
+
           <MyButton
             label="SALVAR"
-            color="secondary"
-            callback={() => {
-              updateFormat()
-            }}
+            variant="primary"
+            callback={() => updateFormat()}
+            fullWidth
+            className={menuPanelStyles.primaryAction}
           />
           <MyButton
             label="NOVA URL"
-            color="secondary"
-            callback={() => {
-              setShowMenu('NEWURL')
-            }}
+            variant="secondary"
+            callback={() => setShowMenu('NEWURL')}
+            fullWidth
+            className={menuPanelStyles.secondaryAction}
           />
-        </FormControl>
-        <DevParagraph>
+        </div>
+
+        <p className="mt-12 text-center text-sm text-white/90">
           Desenvolvido por{' '}
-          <a href="https://jarod.dev" target="_blank" rel="noreferrer">
+          <a
+            href="https://jarod.dev"
+            target="_blank"
+            rel="noreferrer"
+            className="font-bold text-white no-underline hover:underline"
+          >
             Jarod Mateus
           </a>
-        </DevParagraph>
-      </BoxContainer>
-    </Container>
+        </p>
+      </div>
+    </div>
   )
 }

@@ -2,13 +2,9 @@
 
 import React, { useState, useEffect, useContext, ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
-
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
-import { Drawer, Box, Link } from '@mui/material'
-import { Share, CopyAll } from '@mui/icons-material'
+import Link from 'next/link'
+import { Button } from '@heroui/react'
+import { Bars3Icon, ShareIcon, DocumentDuplicateIcon } from '@heroicons/react/24/outline'
 
 import Options from '@/components/Options'
 import NewUrl from '@/components/NewUrl'
@@ -24,10 +20,7 @@ interface HeaderProps {
 }
 
 export default function Header(props: HeaderProps) {
-  const [openDrawer] = useState(false)
   const [drawerWidth, setDrawerWidth] = useState(400)
-  const [_showMenu, _setShowMenu] = useState<MenuType>('NEWURL')
-  const [_logged, _setLogged] = useState(false)
 
   const { showMenu } = useContext(MenuContext)
   const { logged } = useContext(AuthContext)
@@ -43,10 +36,7 @@ export default function Header(props: HeaderProps) {
   }, [])
 
   const [state, setState] = useState<Record<string, boolean>>({
-    top: false,
     left: false,
-    bottom: false,
-    right: false,
   })
 
   // Open drawer by default on home page
@@ -56,15 +46,15 @@ export default function Header(props: HeaderProps) {
     }
   }, [pathname])
 
-  const toggleDrawer = (anchor: string, open: boolean) => (event: any) => {
+  const toggleDrawer = (open: boolean) => (event?: React.MouseEvent | React.KeyboardEvent) => {
     if (
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
+      event?.type === 'keydown' &&
+      ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
     ) {
       return
     }
 
-    setState({ ...state, [anchor]: open })
+    setState({ ...state, left: open })
   }
 
   useEffect(() => {
@@ -75,109 +65,85 @@ export default function Header(props: HeaderProps) {
     }
   }, [windowsWidth])
 
-  useEffect(() => {
-    _setShowMenu(showMenu)
-  }, [showMenu])
-
-  useEffect(() => {
-    _setLogged(logged)
-  }, [logged])
-
   return (
     <div>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer('left', !openDrawer)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Link
-            variant="h1"
-            component="div"
-            sx={{ flexGrow: 1 }}
-            textAlign="center"
-            style={{
-              fontWeight: 800,
-              fontSize: '1.5rem',
-              color: 'white',
-              cursor: 'pointer',
-              textDecoration: 'none',
-            }}
-            onClick={() => {
-              window.location.href = '/'
-            }}
-          >
-            UNIPAD - Codifique e compartilhe
-          </Link>
+      <header className="sticky top-0 z-30 flex h-16 w-full items-center border-b border-[#5d111a]/30 bg-[#871523] px-3 text-white shadow-[0_10px_28px_rgba(64,10,19,0.22)] sm:px-4">
+        <Button
+          isIconOnly
+          variant="ghost"
+          className="mr-2 text-white hover:bg-white/10 sm:mr-4"
+          onPress={() => toggleDrawer(!state.left)()}
+          aria-label="menu"
+        >
+          <Bars3Icon className="w-6 h-6" />
+        </Button>
+        <Link
+          href="/"
+          className="min-w-0 flex-grow truncate px-2 text-center text-base font-extrabold tracking-wide text-white no-underline hover:text-white/90 sm:text-xl md:text-2xl"
+        >
+          UNIPAD - Codifique e compartilhe
+        </Link>
 
-          <div>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-              onClick={() => {
-                const pad = (
-                  document.getElementsByClassName(
-                    'npm__react-simple-code-editor__textarea'
-                  )[0] as HTMLTextAreaElement
-                ).value
+        <div className="flex shrink-0">
+          <Button
+            isIconOnly
+            variant="ghost"
+            className="text-white hover:bg-white/10"
+            aria-label="copy pad content"
+            onPress={() => {
+              const padElements = document.getElementsByClassName(
+                'npm__react-simple-code-editor__textarea'
+              )
+              if (padElements.length > 0) {
+                const pad = (padElements[0] as HTMLTextAreaElement).value
                 copyToClipBoard(pad)
                 setSnackObject({
                   open: true,
                   message: 'Copiado para sua área de transferência!',
                   type: 'success',
                 })
-              }}
-            >
-              <CopyAll />
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-              onClick={() => {
-                copyToClipBoard(actualUrl)
-                setSnackObject({
-                  open: true,
-                  message: 'Copiado para sua área de transferência!',
-                  type: 'success',
-                })
-              }}
-            >
-              <Share />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        anchor="left"
-        open={state['left']}
-        onClose={toggleDrawer(
-          'left',
-          pathname === '/' ? true : false
-        )}
-        elevation={1}
+              }
+            }}
+          >
+            <DocumentDuplicateIcon className="w-6 h-6" />
+          </Button>
+          <Button
+            isIconOnly
+            variant="ghost"
+            className="text-white hover:bg-white/10"
+            aria-label="share url"
+            onPress={() => {
+              copyToClipBoard(actualUrl)
+              setSnackObject({
+                open: true,
+                message: 'Copiado para sua área de transferência!',
+                type: 'success',
+              })
+            }}
+          >
+            <ShareIcon className="w-6 h-6" />
+          </Button>
+        </div>
+      </header>
+
+      {/* Drawer Overlay */}
+      {state.left && (
+        <div 
+          className="fixed inset-x-0 bottom-0 top-16 z-40 bg-neutral-900/45 backdrop-blur-[1px]" 
+          onClick={pathname === '/' ? undefined : toggleDrawer(false)}
+        />
+      )}
+
+      {/* Drawer Sidebar */}
+      <div
+        className={`fixed left-0 top-0 z-50 h-full overflow-y-auto border-r border-white/10 bg-[linear-gradient(180deg,#ff5d4b_0%,#fb284e_55%,#f01d46_100%)] text-white shadow-[24px_0_70px_rgba(94,13,28,0.28)] transition-transform duration-300 ease-in-out ${
+          state.left ? 'translate-x-0' : '-translate-x-full'
+        }`}
+        style={{ width: drawerWidth }}
       >
-        <Box
-          sx={{
-            bgcolor: 'primary.main',
-            width: drawerWidth,
-            height: typeof window !== 'undefined' ? window.innerHeight : 500,
-          }}
-        >
-          {renderChildren(_logged, _showMenu, toggleDrawer)}
-        </Box>
-      </Drawer>
+        {renderChildren(logged, showMenu, toggleDrawer)}
+      </div>
+
       {props.children}
     </div>
   )
@@ -186,13 +152,14 @@ export default function Header(props: HeaderProps) {
 const renderChildren = (
   logged: boolean,
   showMenu: MenuType,
-  toggleDrawer: Function
+  toggleDrawer: (open: boolean) => (event?: React.MouseEvent | React.KeyboardEvent) => void
 ) => {
   if (!logged && showMenu === 'LOGIN') {
     return <Login />
   } else if (showMenu === 'NEWURL') {
     return <NewUrl />
   } else if (showMenu === 'OPTIONS') {
-    return <Options handleCloseMenu={toggleDrawer('left', false)} />
+    return <Options handleCloseMenu={toggleDrawer(false)} />
   }
+  return null
 }

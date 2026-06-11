@@ -1,17 +1,29 @@
 import React from 'react'
-import { MyButton } from './styles'
-import { ButtonProps as MuiButtonProps } from '@mui/material'
+import { Button as HeroButton } from '@heroui/react'
+import type { ButtonProps as HeroButtonProps, PressEvent } from '@heroui/react'
 
-interface ButtonProps {
+interface ButtonProps extends Omit<HeroButtonProps, 'children' | 'onPress'> {
   label: React.ReactNode;
-  color?: MuiButtonProps['color'];
-  callback?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  callback?: (event: PressEvent) => void;
+  onPress?: (event: PressEvent) => void;
 }
 
-export default function Button({ label, color, callback }: ButtonProps) {
+export default function Button({
+  label,
+  callback,
+  onPress,
+  className,
+  variant = 'primary',
+  ...props
+}: ButtonProps) {
   return (
-    <MyButton variant='contained' color={color as any} onClick={callback}>
+    <HeroButton
+      {...props}
+      variant={variant}
+      onPress={onPress ?? callback}
+      className={`font-semibold shadow-md ${className ?? ''}`.trim()}
+    >
       {label}
-    </MyButton>
+    </HeroButton>
   )
 }

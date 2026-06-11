@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
-import StyledComponentsRegistry from '@/lib/registry'
-import ThemeRegistry from '@/lib/ThemeRegistry'
 import { Providers } from './providers'
-import GlobalStylesComponent from './GlobalStyles'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Unipad - Codifique e compartilhe',
@@ -18,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className="antialiased">
       <head>
         <meta name="theme-color" content="#ff5d4b" />
         <meta name="copyright" content="© 2024 Jarod Mateus" />
@@ -37,14 +35,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <StyledComponentsRegistry>
-          <ThemeRegistry>
-            <Providers>
-              <GlobalStylesComponent />
-              {children}
-            </Providers>
-          </ThemeRegistry>
-        </StyledComponentsRegistry>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )

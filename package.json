@@ -9,26 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.3.9",
-    "@mui/material": "^7.3.9",
+    "@heroicons/react": "^2.2.0",
+    "@heroui/react": "^3.1.0",
+    "@tailwindcss/postcss": "^4.3.0",
     "axios": "^1.17.0",
     "next": "^15.4.2",
+    "postcss": "^8.5.15",
     "prismjs": "^1.30.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-ga4": "^3.0.1",
     "react-simple-code-editor": "^0.14.1",
     "socket.io-client": "^4.8.3",
-    "styled-components": "^6.3.12"
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@types/node": "^25.9.2",
     "@types/prismjs": "^1.26.6",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@types/styled-components": "^5.1.36",
     "typescript": "^5.8.3"
   },
   "packageManager": "yarn@4.13.0"

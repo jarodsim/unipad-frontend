@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+:root {
+  --accent: #ff5d4b;
+  --accent-hover: #f04c3c;
+  --focus: #ff5d4b;
+  --background: #f4f5f7;
+  --radius: 0.75rem;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f4f5f7;
+  font-family: "Poppins", var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(255, 93, 75, 0.24);
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background: rgba(255, 93, 75, 1);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255, 0, 0, 0.4);
+}
