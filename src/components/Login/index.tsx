@@ -43,7 +43,7 @@ export default function NewUrl() {
           message: 'Ops! Algo de errado aconteceu',
         })
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error?.response?.status === 403) {
         setSnackObject({
           open: true,

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, ReactNode } from 'react'
 
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -13,14 +13,18 @@ import Login from '../Login'
 import useWindowsWidth from '../hooks/useWindowWidth'
 import useGetUrl from '../hooks/useGetUrl'
 import copyToClipBoard from '../../util/copyToClipBoard'
-import { MenuContext } from '../../context/menuContext'
+import { MenuContext, MenuType } from '../../context/menuContext'
 import { AuthContext } from '../../context/authContext'
 import { SnackbarContext } from '../../context/snackbarContext'
 
-export default function Header(props) {
+interface HeaderProps {
+  children?: ReactNode;
+}
+
+export default function Header(props: HeaderProps) {
   const [openDrawer] = useState(false)
   const [drawerWidth, setDrawerWidth] = useState(400)
-  const [_showMenu, _setShowMenu] = useState(false)
+  const [_showMenu, _setShowMenu] = useState<MenuType>('NEWURL')
   const [_logged, _setLogged] = useState(false)
 
   const { showMenu } = useContext(MenuContext)
@@ -30,14 +34,14 @@ export default function Header(props) {
   const windowsWidth = useWindowsWidth()
   const actualUrl = useGetUrl()
 
-  const [state, setState] = useState({
+  const [state, setState] = useState<Record<string, boolean>>({
     top: false,
     left: window.location.pathname === '/' ? true : false,
     bottom: false,
     right: false,
   })
 
-  const toggleDrawer = (anchor, open) => (event) => {
+  const toggleDrawer = (anchor: string, open: boolean) => (event: any) => {
     if (
       event.type === 'keydown' &&
       (event.key === 'Tab' || event.key === 'Shift')
@@ -101,9 +105,9 @@ export default function Header(props) {
               aria-haspopup='true'
               color='inherit'
               onClick={() => {
-                const pad = document.getElementsByClassName(
+                const pad = (document.getElementsByClassName(
                   'npm__react-simple-code-editor__textarea'
-                )[0].value
+                )[0] as HTMLTextAreaElement).value
                 copyToClipBoard(pad)
                 setSnackObject({
                   open: true,
@@ -158,7 +162,7 @@ export default function Header(props) {
   )
 }
 
-const children = (logged, showMenu, toggleDrawer) => {
+const children = (logged: boolean, showMenu: MenuType, toggleDrawer: Function) => {
   if (!logged && showMenu === 'LOGIN') {
     return <Login />
   } else if (showMenu === 'NEWURL') {

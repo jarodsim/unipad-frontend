@@ -1,8 +1,14 @@
+import React, { ReactNode } from 'react'
 import { Container } from './styles'
 
 import { Typography } from '@mui/material'
 
-export default function HeaderMenu({ title, actionButton }) {
+interface HeaderMenuProps {
+  title: string;
+  actionButton?: ReactNode;
+}
+
+export default function HeaderMenu({ title, actionButton }: HeaderMenuProps) {
   return (
     <Container>
       <Typography variant='h1' color='white' style={{

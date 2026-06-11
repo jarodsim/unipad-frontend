@@ -1,16 +1,27 @@
-import { Alert, Snackbar } from '@mui/material'
-import { useState, createContext } from 'react'
+import React, { useState, createContext, ReactNode } from 'react'
+import { Alert, Snackbar, AlertColor } from '@mui/material'
 
-export const SnackbarContext = createContext()
+export interface SnackObjectType {
+  open: boolean;
+  type: AlertColor;
+  message: string;
+}
 
-export function SnackbarProvider(props) {
-  const [snackObject, setSnackObject] = useState({
+interface SnackbarContextType {
+  snackObject: SnackObjectType;
+  setSnackObject: React.Dispatch<React.SetStateAction<SnackObjectType>>;
+}
+
+export const SnackbarContext = createContext<SnackbarContextType>({} as SnackbarContextType)
+
+export function SnackbarProvider(props: { children: ReactNode }) {
+  const [snackObject, setSnackObject] = useState<SnackObjectType>({
     open: false,
     type: 'success',
     message: 'teste',
   })
 
-  // TYPE: error | warning | information  | success
+  // TYPE: error | warning | info  | success
 
   function handleClose() {
     setSnackObject({

@@ -48,7 +48,14 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.9.2",
+    "@types/prismjs": "^1.26.6",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@types/styled-components": "^5.1.36",
     "react-test-renderer": "^19.2.4",
+    "typescript": "^6.0.3",
     "yarn-upgrade-all": "^0.7.5"
   },
   "packageManager": "yarn@4.13.0"

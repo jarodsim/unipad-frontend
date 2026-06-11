@@ -1,10 +1,10 @@
 export function useGetFormatedDate() {
   let data = new Date()
-  let hora = data.getHours()
+  let hora: string | number = data.getHours()
   let minutos = data.getMinutes()
   let ano = data.getFullYear()
   let mes = data.getMonth() + 1
-  let dia = data.getDate()
+  let dia: string | number = data.getDate()
   let dataFormatada = '2017-05-24T10:30'
 
   if (hora <= 9) {
@@ -16,7 +16,7 @@ export function useGetFormatedDate() {
     mes = mes + 1
   }
 
-  if (dia <= 9) {
+  if (typeof dia === 'number' && dia <= 9) {
     dia = '0' + dia
   }
 

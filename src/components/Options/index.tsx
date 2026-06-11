@@ -21,7 +21,7 @@ import { SnackbarContext } from '../../context/snackbarContext'
 import api from '../../service/api'
 import useHandleLocalToken from '../hooks/useHandleLocalToken'
 
-export default function Options({ handleCloseMenu }) {
+export default function Options({ handleCloseMenu }: { handleCloseMenu: () => void }) {
   const [format, setFormat] = useState('javascript')
 
   const url = window.location.pathname

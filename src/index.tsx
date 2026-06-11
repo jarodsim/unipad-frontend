@@ -15,7 +15,7 @@ import { SnackbarProvider } from './context/snackbarContext';
 import { LoadingProvider } from './context/loadingContext';
 
 const container = document.getElementById('root');
-const root = createRoot(container);
+const root = createRoot(container!);
 
 root.render(
   <React.StrictMode>

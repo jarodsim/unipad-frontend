@@ -53,7 +53,7 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: ['Poppins'],
+    fontFamily: 'Poppins',
   },
   components: {
     MuiSelect: {

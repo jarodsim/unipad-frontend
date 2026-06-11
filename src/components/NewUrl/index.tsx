@@ -26,7 +26,7 @@ export default function NewUrl() {
   const [format, setFormat] = useState('sql')
   const [url, setUrl] = useState('')
   const [password, setPassword] = useState('')
-  const [expiration, setExpiration] = useState(null)
+  const [expiration, setExpiration] = useState<string | null>(null)
 
   const formatedDate = useGetFormatedDate()
   const { setLoading } = useLoading()
@@ -60,7 +60,7 @@ export default function NewUrl() {
 
         window.location.pathname = `${url}`
       }
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false)
       console.error(error)
       if (error?.response?.status === 403) {
