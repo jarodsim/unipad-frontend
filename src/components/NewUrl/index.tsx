@@ -1,4 +1,7 @@
+'use client'
+
 import { useContext, useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { LockOutlined } from '@mui/icons-material'
 import {
   Typography,
@@ -11,16 +14,16 @@ import {
 } from '@mui/material'
 
 import { Container, BoxContainer, DevParagraph } from './styles'
-import HeaderMenu from '../HeaderMenu'
-import MyButton from '../Button'
-import { languages } from '../../constants/languages'
+import HeaderMenu from '@/components/HeaderMenu'
+import MyButton from '@/components/Button'
+import { languages } from '@/constants/languages'
 
-import { useGetFormatedDate } from '../hooks/useGetFormatedDate'
-import api from '../../service/api'
-import { SnackbarContext } from '../../context/snackbarContext'
-import useLoading from '../hooks/useLoading'
+import { useGetFormatedDate } from '@/components/hooks/useGetFormatedDate'
+import api from '@/service/api'
+import { SnackbarContext } from '@/context/snackbarContext'
+import useLoading from '@/components/hooks/useLoading'
 
-import ReactGA from 'react-ga4';
+import ReactGA from 'react-ga4'
 
 export default function NewUrl() {
   const [format, setFormat] = useState('sql')
@@ -30,6 +33,7 @@ export default function NewUrl() {
 
   const formatedDate = useGetFormatedDate()
   const { setLoading } = useLoading()
+  const pathname = usePathname()
 
   const { setSnackObject } = useContext(SnackbarContext)
 
@@ -56,7 +60,7 @@ export default function NewUrl() {
           category: 'New URL',
           action: 'Click',
           label: `New URL: ${url}`,
-      });
+        })
 
         window.location.pathname = `${url}`
       }
@@ -82,14 +86,14 @@ export default function NewUrl() {
   }
 
   useEffect(() => {
-    if (window.location.pathname !== '/') {
-      setUrl(window.location.pathname.replace('/', ''))
+    if (pathname !== '/') {
+      setUrl(pathname.replace('/', ''))
     }
-  }, [])
+  }, [pathname])
 
   return (
     <Container>
-      <HeaderMenu title='Unipad' />
+      <HeaderMenu title="Unipad" />
       <BoxContainer
         sx={{
           display: 'flex',
@@ -99,29 +103,29 @@ export default function NewUrl() {
         }}
       >
         <Typography
-          variant='h5'
-          textAlign='center'
-          fontWeight='700'
-          color='white'
+          variant="h5"
+          textAlign="center"
+          fontWeight="700"
+          color="white"
         >
-          Crie uma url e clique em "ir" para começar!
+          Crie uma url e clique em &quot;ir&quot; para começar!
         </Typography>
 
         {/* URL */}
         <FormControl
-          variant='outlined'
+          variant="outlined"
           sx={{ m: 1, minWidth: '90%' }}
-          color='secondary'
+          color="secondary"
         >
           <TextField
-            variant='outlined'
-            label='URL'
-            color='secondary'
+            variant="outlined"
+            label="URL"
+            color="secondary"
             required={true}
-            placeholder='minha_url'
+            placeholder="minha_url"
             InputProps={{
               startAdornment: (
-                <InputAdornment position='start'>/</InputAdornment>
+                <InputAdornment position="start">/</InputAdornment>
               ),
             }}
             value={url}
@@ -146,20 +150,20 @@ export default function NewUrl() {
 
         {/* PASSWORD */}
         <FormControl
-          variant='outlined'
+          variant="outlined"
           sx={{ m: 1, minWidth: '90%' }}
-          color='secondary'
+          color="secondary"
         >
           <TextField
-            variant='outlined'
-            label='Senha'
-            color='secondary'
+            variant="outlined"
+            label="Senha"
+            color="secondary"
             required={false}
-            placeholder='opcional'
-            type='password'
+            placeholder="opcional"
+            type="password"
             InputProps={{
               startAdornment: (
-                <InputAdornment position='start'>
+                <InputAdornment position="start">
                   <LockOutlined />
                 </InputAdornment>
               ),
@@ -172,23 +176,23 @@ export default function NewUrl() {
 
         {/* FORMAT */}
         <FormControl
-          variant='outlined'
+          variant="outlined"
           sx={{ m: 1, minWidth: '90%' }}
-          color='secondary'
+          color="secondary"
         >
-          <InputLabel id='format'>
-            <Typography variant='body1'>Formato</Typography>
+          <InputLabel id="format">
+            <Typography variant="body1">Formato</Typography>
           </InputLabel>
           <Select
-            labelId='format'
-            id='select-format'
-            variant='outlined'
-            label='Formato'
+            labelId="format"
+            id="select-format"
+            variant="outlined"
+            label="Formato"
             value={format}
             onChange={(e) => {
               setFormat(e.target.value)
             }}
-            color='secondary'
+            color="secondary"
             sx={{
               textAlign: 'center',
             }}
@@ -197,22 +201,22 @@ export default function NewUrl() {
               <MenuItem
                 key={index}
                 value={language === 'GO' ? language.toLowerCase() : language}
-                color='#e3f2fd'
+                color="#e3f2fd"
               >
-                <Typography variant='body1'>{language}</Typography>
+                <Typography variant="body1">{language}</Typography>
               </MenuItem>
             ))}
           </Select>
         </FormControl>
         <FormControl
-          variant='outlined'
+          variant="outlined"
           sx={{ m: 1, minWidth: '90%' }}
-          color='secondary'
+          color="secondary"
         >
           <TextField
-            variant='outlined'
-            label='Data de Expiração (opcional)'
-            type='datetime-local'
+            variant="outlined"
+            label="Data de Expiração (opcional)"
+            type="datetime-local"
             defaultValue={formatedDate}
             inputProps={{
               min: formatedDate,
@@ -223,13 +227,13 @@ export default function NewUrl() {
           />
         </FormControl>
         <FormControl
-          variant='outlined'
+          variant="outlined"
           sx={{ m: 1, minWidth: '90%' }}
-          color='secondary'
+          color="secondary"
         >
           <MyButton
-            label='IR'
-            color='secondary'
+            label="IR"
+            color="secondary"
             callback={() => {
               if (url.length > 0) {
                 handleGoButton()
@@ -245,7 +249,7 @@ export default function NewUrl() {
         </FormControl>
         <DevParagraph>
           Desenvolvido por{' '}
-          <a href='https://jarod.dev' target='_blank' rel='noreferrer'>
+          <a href="https://jarod.dev" target="_blank" rel="noreferrer">
             Jarod Mateus
           </a>
         </DevParagraph>

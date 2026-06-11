@@ -1,4 +1,7 @@
+'use client'
+
 import { useContext, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { LockOutlined } from '@mui/icons-material'
 import {
   Typography,
@@ -8,21 +11,21 @@ import {
 } from '@mui/material'
 
 import { Container, BoxContainer, DevParagraph } from './styles'
-import HeaderMenu from '../HeaderMenu'
-import MyButton from '../Button'
+import HeaderMenu from '@/components/HeaderMenu'
+import MyButton from '@/components/Button'
 
-import api from '../../service/api'
+import api from '@/service/api'
 
-import { AuthContext } from '../../context/authContext'
-import { SnackbarContext } from '../../context/snackbarContext'
+import { AuthContext } from '@/context/authContext'
+import { SnackbarContext } from '@/context/snackbarContext'
 
-export default function NewUrl() {
+export default function Login() {
   const [password, setPassword] = useState('')
 
   const { setLogged } = useContext(AuthContext)
   const { setSnackObject } = useContext(SnackbarContext)
 
-  const url = window.location.pathname
+  const url = usePathname()
 
   async function handleLogin() {
     try {
@@ -66,30 +69,30 @@ export default function NewUrl() {
         }}
       >
         <Typography
-          variant='h5'
-          textAlign='center'
-          fontWeight='700'
-          color='white'
+          variant="h5"
+          textAlign="center"
+          fontWeight="700"
+          color="white"
         >
           Faça o login para continuar
         </Typography>
 
         {/* PASSWORD */}
         <FormControl
-          variant='outlined'
+          variant="outlined"
           sx={{ m: 1, minWidth: '90%' }}
-          color='secondary'
+          color="secondary"
         >
           <TextField
-            variant='outlined'
-            label='Senha'
-            color='secondary'
+            variant="outlined"
+            label="Senha"
+            color="secondary"
             required={true}
-            placeholder='senha'
-            type='password'
+            placeholder="senha"
+            type="password"
             InputProps={{
               startAdornment: (
-                <InputAdornment position='start'>
+                <InputAdornment position="start">
                   <LockOutlined />
                 </InputAdornment>
               ),
@@ -100,13 +103,13 @@ export default function NewUrl() {
           />
         </FormControl>
         <FormControl
-          variant='outlined'
+          variant="outlined"
           sx={{ m: 1, minWidth: '90%' }}
-          color='secondary'
+          color="secondary"
         >
           <MyButton
-            label='LOGAR'
-            color='secondary'
+            label="LOGAR"
+            color="secondary"
             callback={() => {
               handleLogin()
             }}
@@ -114,7 +117,7 @@ export default function NewUrl() {
         </FormControl>
         <DevParagraph>
           Desenvolvido por{' '}
-          <a href='https://jarod.dev/' target='_blank' rel='noreferrer'>
+          <a href="https://jarod.dev/" target="_blank" rel="noreferrer">
             Jarod Mateus
           </a>
         </DevParagraph>

@@ -1,62 +1,35 @@
 {
   "name": "unipad",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@material-ui/styles": "^4.11.5",
     "@mui/icons-material": "^7.3.9",
     "@mui/material": "^7.3.9",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
     "axios": "^1.17.0",
+    "next": "^15.4.2",
     "prismjs": "^1.30.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-ga4": "^3.0.1",
-    "react-router-dom": "^7.13.2",
-    "react-scripts": "^5.0.1",
     "react-simple-code-editor": "^0.14.1",
     "socket.io-client": "^4.8.3",
-    "styled-components": "^6.3.12",
-    "web-vitals": "^5.2.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "styled-components": "^6.3.12"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
     "@types/node": "^25.9.2",
     "@types/prismjs": "^1.26.6",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/styled-components": "^5.1.36",
-    "react-test-renderer": "^19.2.4",
-    "typescript": "^6.0.3",
-    "yarn-upgrade-all": "^0.7.5"
+    "typescript": "^5.8.3"
   },
   "packageManager": "yarn@4.13.0"
 }

@@ -1,4 +1,7 @@
+'use client'
+
 import { useContext, useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { ArrowBack } from '@mui/icons-material'
 import {
   Typography,
@@ -9,22 +12,22 @@ import {
 } from '@mui/material'
 
 import { Container, IconButton, BoxContainer, DevParagraph } from './styles'
-import HeaderMenu from '../HeaderMenu'
-import MyButton from '../Button'
+import HeaderMenu from '@/components/HeaderMenu'
+import MyButton from '@/components/Button'
 
-import { languages } from '../../constants/languages'
+import { languages } from '@/constants/languages'
 
-import { PadContext } from '../../context/padContext'
-import { MenuContext } from '../../context/menuContext'
-import { SnackbarContext } from '../../context/snackbarContext'
+import { PadContext } from '@/context/padContext'
+import { MenuContext } from '@/context/menuContext'
+import { SnackbarContext } from '@/context/snackbarContext'
 
-import api from '../../service/api'
-import useHandleLocalToken from '../hooks/useHandleLocalToken'
+import api from '@/service/api'
+import useHandleLocalToken from '@/components/hooks/useHandleLocalToken'
 
 export default function Options({ handleCloseMenu }: { handleCloseMenu: () => void }) {
   const [format, setFormat] = useState('javascript')
 
-  const url = window.location.pathname
+  const url = usePathname()
   const token = useHandleLocalToken()
 
   const { format: formatContext, setFormat: setFormatContext } =
@@ -64,7 +67,7 @@ export default function Options({ handleCloseMenu }: { handleCloseMenu: () => vo
   return (
     <Container>
       <HeaderMenu
-        title='CONFIGURAÇÕES DA URL'
+        title="CONFIGURAÇÕES DA URL"
         actionButton={
           <IconButton onClick={handleCloseMenu}>
             <ArrowBack />
@@ -80,33 +83,33 @@ export default function Options({ handleCloseMenu }: { handleCloseMenu: () => vo
         }}
       >
         <Typography
-          variant='h5'
-          textAlign='center'
-          fontWeight='700'
-          color='white'
+          variant="h5"
+          textAlign="center"
+          fontWeight="700"
+          color="white"
         >
           {url}
         </Typography>
         <FormControl
-          variant='outlined'
+          variant="outlined"
           sx={{ m: 1, minWidth: '90%', minHeight: '100%' }}
-          color='secondary'
+          color="secondary"
         >
-          <InputLabel id='format'>
-            <Typography variant='body1' color='#e3f2fd'>
+          <InputLabel id="format">
+            <Typography variant="body1" color="#e3f2fd">
               Formato
             </Typography>
           </InputLabel>
           <Select
-            labelId='format'
-            id='select-format'
-            variant='outlined'
-            label='Formato'
+            labelId="format"
+            id="select-format"
+            variant="outlined"
+            label="Formato"
             value={format}
             onChange={(e) => {
               setFormatContext(e.target.value)
             }}
-            color='secondary'
+            color="secondary"
             sx={{
               textAlign: 'center',
             }}
@@ -115,22 +118,22 @@ export default function Options({ handleCloseMenu }: { handleCloseMenu: () => vo
               <MenuItem
                 key={index}
                 value={language === 'GO' ? language.toLowerCase() : language}
-                color='#e3f2fd'
+                color="#e3f2fd"
               >
-                <Typography variant='body1'>{language}</Typography>
+                <Typography variant="body1">{language}</Typography>
               </MenuItem>
             ))}
           </Select>
           <MyButton
-            label='SALVAR'
-            color='secondary'
+            label="SALVAR"
+            color="secondary"
             callback={() => {
               updateFormat()
             }}
           />
           <MyButton
-            label='NOVA URL'
-            color='secondary'
+            label="NOVA URL"
+            color="secondary"
             callback={() => {
               setShowMenu('NEWURL')
             }}
@@ -138,7 +141,7 @@ export default function Options({ handleCloseMenu }: { handleCloseMenu: () => vo
         </FormControl>
         <DevParagraph>
           Desenvolvido por{' '}
-          <a href='https://jarod.dev' target='_blank' rel='noreferrer'>
+          <a href="https://jarod.dev" target="_blank" rel="noreferrer">
             Jarod Mateus
           </a>
         </DevParagraph>

@@ -1,5 +1,7 @@
+'use client'
+
 import { useContext } from 'react'
-import { LoadingContext } from '../../context/loadingContext'
+import { LoadingContext } from '@/context/loadingContext'
 
 const useLoading = () => {
   const context = useContext(LoadingContext)

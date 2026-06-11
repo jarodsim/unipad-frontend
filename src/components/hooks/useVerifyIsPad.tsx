@@ -1,17 +1,10 @@
-import { useState, useEffect } from 'react'
+'use client'
+
+import { usePathname } from 'next/navigation'
 
 const useVerifyIsPad = () => {
-  const [ispad, setIsPad] = useState(true)
-
-  useEffect(() => {
-    const pathname = window.location.pathname
-
-    if (pathname === '/') {
-      setIsPad(false)
-    }
-  }, [])
-
-  return ispad
+  const pathname = usePathname()
+  return pathname !== '/'
 }
 
 export default useVerifyIsPad

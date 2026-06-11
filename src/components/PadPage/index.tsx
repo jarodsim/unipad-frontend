@@ -1,13 +1,16 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+'use client'
 
-import useHandleLocalToken from '../../components/hooks/useHandleLocalToken'
-import api from '../../service/api'
+import { useContext, useEffect, useMemo, useState, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 
-import { PadContext } from '../../context/padContext'
+import useHandleLocalToken from '@/components/hooks/useHandleLocalToken'
+import api from '@/service/api'
+
+import { PadContext } from '@/context/padContext'
 
 import { Textarea } from './styles'
 
-import useDebounce from '../../components/hooks/useDebounce'
+import useDebounce from '@/components/hooks/useDebounce'
 
 // editor styles
 // @ts-ignore
@@ -26,23 +29,19 @@ import 'prismjs/components/prism-go'
 import 'prismjs/components/prism-markdown'
 import 'prismjs/components/prism-python'
 import './prism.css'
-import { MenuContext } from '../../context/menuContext'
-import { AuthContext } from '../../context/authContext'
-import useLoading from '../../components/hooks/useLoading'
-import { SnackbarContext } from '../../context/snackbarContext'
+import { MenuContext } from '@/context/menuContext'
+import { AuthContext } from '@/context/authContext'
+import useLoading from '@/components/hooks/useLoading'
+import { SnackbarContext } from '@/context/snackbarContext'
 
-import io from 'socket.io-client';
+import { io, Socket } from 'socket.io-client'
 
-const socketClient = api.getUri()
-const socket = io(socketClient, {
-  transports: ['websocket'],
-});
-
-export default function Pad() {
+export default function PadPage() {
   const [pad, setPad] = useState('')
   const [format, setFormat] = useState('javascript')
   const { setLoading } = useLoading()
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [isConnected, setIsConnected] = useState(false)
+  const socketRef = useRef<Socket | null>(null)
 
   const { setFormat: setFormatInContext, format: formatContext } =
     useContext(PadContext)
@@ -53,15 +52,47 @@ export default function Pad() {
   const debaunced = useDebounce(updatePad, 1000)
   const token = useHandleLocalToken()
 
-  const pathname = window.location.pathname.replace('/', '')
+  const pathname = usePathname()
+  const padPath = pathname.replace('/', '')
+
+  // Initialize socket on mount (client-side only)
+  useEffect(() => {
+    const socketClient = api.getUri()
+    const socket = io(socketClient, {
+      transports: ['websocket'],
+    })
+    socketRef.current = socket
+    setIsConnected(socket.connected)
+
+    socket.on('connection', () => {
+      socket.emit('create', `/${padPath}`)
+      setIsConnected(true)
+    })
+
+    socket.on('disconnect', () => {
+      setIsConnected(false)
+    })
+
+    socket.on(`/${padPath}`, (data) => {
+      setPad(data.data.pad)
+    })
+
+    return () => {
+      socket.off('connection')
+      socket.off('disconnect')
+      socket.off(`/${padPath}`)
+      socket.disconnect()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (token) {
-      ; (async () => {
+      ;(async () => {
         await handleGetUnipad()
       })()
     } else {
-      ; (async () => {
+      ;(async () => {
         await handleAuth()
       })()
     }
@@ -79,7 +110,7 @@ export default function Pad() {
       const { data } = await api.put(
         'get',
         {
-          url: `/${pathname}`,
+          url: `/${padPath}`,
         },
         {
           headers: {
@@ -132,7 +163,7 @@ export default function Pad() {
       const { data: auth } = await api.post(
         'auth',
         {
-          url: `/${pathname}`,
+          url: `/${padPath}`,
           password: '123456',
         },
         {
@@ -165,13 +196,14 @@ export default function Pad() {
       }
     }
   }
+
   async function updatePad() {
     await api.put(
       '',
       {
         pad,
         format,
-        url: `/${pathname}`,
+        url: `/${padPath}`,
       },
       {
         headers: {
@@ -188,35 +220,6 @@ export default function Pad() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pad])
 
-  useEffect(() => {
-    // socket.emit('create', `/${pathname}`)
-  }, [])
-
-  useEffect(() => {
-    socket.on("connection", () => {
-      socket.emit('create', `/${pathname}`)
-      setIsConnected(true);
-    });
-
-    socket.on('disconnect', () => {
-      setIsConnected(false);
-    });
-
-    return () => {
-      socket.off('connection');
-      socket.off('disconnect');
-      socket.off(`/${pathname}`);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
-
-  useEffect(() => {
-    socket.on(`/${pathname}`, (data) => {
-      setPad(data.data.pad)
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   if (!logged && !isConnected) {
     return <></>
   }
@@ -225,14 +228,20 @@ export default function Pad() {
     <div>
       <Textarea
         value={pad}
-        onValueChange={(pad) => {
-          socket.emit('editpad', { pad })
-          setPad(pad)
+        onValueChange={(newPad) => {
+          socketRef.current?.emit('editpad', { pad: newPad })
+          setPad(newPad)
         }}
         highlight={(pad) =>
           highlight(
             pad,
-            languages[format === 'text/markdown' ? 'markdown' : format === 'html/markup' ? 'markup' : format]
+            languages[
+              format === 'text/markdown'
+                ? 'markdown'
+                : format === 'html/markup'
+                  ? 'markup'
+                  : format
+            ]
           )
         }
         padding={10}
